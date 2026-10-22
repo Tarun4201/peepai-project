@@ -3,24 +3,16 @@ import { motion } from 'framer-motion'
 import { ChevronDown, Star } from 'lucide-react'
 import { useOpenNow } from '../../hooks/useOpenNow'
 import type { RestaurantConfig } from '../../config/restaurant'
+import { HeroVideoCollage } from './HeroVideoCollage'
 
 interface HeroProps { config: RestaurantConfig }
-
-// Editorial collage layout — 5 slots mapped to specific photos
-const COLLAGE_PHOTOS = [
-  { file: 'peepai-bar-counter.jpg', label: 'The Bar' },
-  { file: 'peepai-rooftop.jpg',     label: 'Sky Terrace' },
-  { file: 'peepai-elephant-mural.jpg', label: 'The Mural' },
-  { file: 'peepai-main-hall.jpg',   label: 'Main Hall' },
-  { file: 'peepai-bar-stools.jpg',  label: 'Bar Lounge' },
-]
 
 export function Hero({ config }: HeroProps) {
   const isOpen = useOpenNow(config.hours)
   const [parallax, setParallax] = useState(0)
   const heroRef = useRef<HTMLElement>(null)
 
-  // Subtle scroll parallax on collage
+  // Subtle scroll parallax on background collage
   useEffect(() => {
     let raf = 0
     const onScroll = () => {
@@ -36,106 +28,17 @@ export function Hero({ config }: HeroProps) {
   const scrollDown = () =>
     document.getElementById('welcome')?.scrollIntoView({ behavior: 'smooth' })
 
-  const py = parallax * 0.18
+  const py = parallax * 0.15
 
   return (
     <section
       ref={heroRef}
       id="hero"
-      className="relative min-h-[100dvh] flex flex-col justify-center sm:justify-end overflow-hidden pt-20 sm:pt-32 pb-12 sm:pb-24"
+      className="relative min-h-[100dvh] flex flex-col justify-center overflow-hidden pt-20 sm:pt-24 pb-14 sm:pb-16"
       style={{ background: '#171713' }}
     >
-      {/* ── Editorial Photo Backdrop & Collage (4K & Mobile-Optimized) ── */}
-      <div
-        className="absolute inset-0 z-0"
-        style={{ transform: `translateY(${py}px)`, willChange: 'transform', top: `-${py}px` }}
-        aria-hidden="true"
-      >
-        {/* Mobile Single Full-Bleed 4K Backdrop */}
-        <div className="sm:hidden absolute inset-0 overflow-hidden">
-          <img
-            src="/photos/peepai-bar-counter.jpg"
-            alt="Peepai Brewery & Kitchen Atmosphere"
-            className="w-full h-full object-cover object-[center_35%]"
-            loading="eager"
-            fetchPriority="high"
-          />
-        </div>
-
-        {/* Desktop Asymmetric 5-panel collage grid */}
-        <div
-          className="hidden sm:grid absolute inset-0"
-          style={{
-            gridTemplateColumns: '1fr 0.62fr 0.62fr',
-            gridTemplateRows: '1fr 1fr',
-            gap: '3px',
-          }}
-        >
-          {/* Panel 1 — large left spanning 2 rows */}
-          <div style={{ gridRow: '1 / 3', gridColumn: '1', overflow: 'hidden', position: 'relative' }}>
-            <img
-              src={`/photos/${COLLAGE_PHOTOS[0].file}`}
-              alt={COLLAGE_PHOTOS[0].label}
-              className="w-full h-full object-cover object-[center_35%]"
-              style={{ minHeight: '100vh' }}
-              loading="eager"
-              fetchPriority="high"
-            />
-          </div>
-          {/* Panel 2 — top centre */}
-          <div style={{ gridColumn: '2', overflow: 'hidden' }}>
-            <img
-              src={`/photos/${COLLAGE_PHOTOS[1].file}`}
-              alt={COLLAGE_PHOTOS[1].label}
-              className="w-full h-full object-cover object-[center_45%]"
-              loading="eager"
-            />
-          </div>
-          {/* Panel 3 — top right (Focal point neatly on Golden Elephant) */}
-          <div style={{ gridColumn: '3', overflow: 'hidden' }}>
-            <img
-              src={`/photos/${COLLAGE_PHOTOS[2].file}`}
-              alt={COLLAGE_PHOTOS[2].label}
-              className="w-full h-full object-cover object-[center_20%]"
-              loading="eager"
-            />
-          </div>
-          {/* Panel 4 — bottom centre */}
-          <div style={{ gridColumn: '2', overflow: 'hidden' }}>
-            <img
-              src={`/photos/${COLLAGE_PHOTOS[3].file}`}
-              alt={COLLAGE_PHOTOS[3].label}
-              className="w-full h-full object-cover object-[center_50%]"
-              loading="eager"
-            />
-          </div>
-          {/* Panel 5 — bottom right */}
-          <div style={{ gridColumn: '3', overflow: 'hidden' }}>
-            <img
-              src={`/photos/${COLLAGE_PHOTOS[4].file}`}
-              alt={COLLAGE_PHOTOS[4].label}
-              className="w-full h-full object-cover object-[center_35%]"
-              loading="eager"
-            />
-          </div>
-        </div>
-
-        {/* Cinematic overlay — deep warm shadow bottom-up + left-side darkening */}
-        <div
-          className="absolute inset-0"
-          style={{
-            background: `
-              linear-gradient(to right, rgba(23,23,19,0.85) 0%, rgba(23,23,19,0.30) 55%, rgba(23,23,19,0.35) 100%),
-              linear-gradient(to top,   rgba(23,23,19,0.95) 0%, rgba(23,23,19,0.45) 45%, rgba(23,23,19,0.20) 100%)
-            `,
-          }}
-        />
-        {/* Top fade for navbar legibility */}
-        <div
-          className="absolute inset-x-0 top-0 h-36"
-          style={{ background: 'linear-gradient(to bottom, rgba(23,23,19,0.65) 0%, transparent 100%)' }}
-        />
-      </div>
+      {/* ── 4K Cinematic Video Background & Editorial Collage (food1–food4) ── */}
+      <HeroVideoCollage parallaxY={py} />
 
       {/* ── Hero Content ── */}
       <div className="container-xl relative z-10 w-full">
