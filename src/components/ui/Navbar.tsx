@@ -6,11 +6,13 @@ import type { RestaurantConfig } from '../../config/restaurant'
 interface NavbarProps { config: RestaurantConfig }
 
 const NAV_LINKS = [
-  { href: '#welcome',  label: 'Our Story' },
-  { href: '#menu',     label: 'Menu' },
-  { href: '#gallery',  label: 'Gallery' },
-  { href: '#reserve',  label: 'Reservations' },
-  { href: '#visit',    label: 'Find Us' },
+  { href: '#welcome',    label: 'Our Story' },
+  { href: '#vibe',       label: 'Ambience' },
+  { href: '#corporate',  label: 'Corporate & Events' },
+  { href: '#menu',       label: 'Menu' },
+  { href: '#gallery',    label: 'Gallery' },
+  { href: '#reserve',    label: 'Reservations' },
+  { href: '#visit',      label: 'Find Us' },
 ]
 
 export function Navbar({ config }: NavbarProps) {
@@ -101,12 +103,12 @@ export function Navbar({ config }: NavbarProps) {
           </button>
 
           {/* Desktop links */}
-          <div className="hidden lg:flex items-center gap-7">
+          <div className="hidden lg:flex items-center gap-6">
             {NAV_LINKS.map(l => (
               <button
                 key={l.href}
                 onClick={() => go(l.href)}
-                className={`nav-link ${active === l.href ? 'active' : ''}`}
+                className={`nav-link text-xs ${active === l.href ? 'active' : ''}`}
               >
                 {l.label}
               </button>
@@ -115,17 +117,28 @@ export function Navbar({ config }: NavbarProps) {
 
           {/* Desktop CTAs */}
           <div className="hidden sm:flex items-center gap-2.5">
-            <a
-              href={`tel:${config.phone}`}
-              className="btn-outline text-xs py-2 px-4 flex items-center gap-1.5"
-              aria-label={`Call us at ${config.phone}`}
+            <button
+              onClick={() => go('#corporate')}
+              className="px-3.5 py-1.5 rounded-[2px] transition-all text-xs font-semibold"
+              style={{
+                background: 'rgba(180,138,69,0.12)',
+                border: '1px solid rgba(180,138,69,0.3)',
+                color: '#F4EFE5',
+              }}
+              onMouseEnter={e => {
+                e.currentTarget.style.background = 'rgba(180,138,69,0.22)'
+                e.currentTarget.style.borderColor = '#B48A45'
+              }}
+              onMouseLeave={e => {
+                e.currentTarget.style.background = 'rgba(180,138,69,0.12)'
+                e.currentTarget.style.borderColor = 'rgba(180,138,69,0.3)'
+              }}
             >
-              <Phone className="w-3 h-3" style={{ color: '#B48A45' }} />
-              <span>{config.phone}</span>
-            </a>
+              Corporate &amp; Events
+            </button>
             <button
               onClick={() => go('#reserve')}
-              className="btn-primary text-xs py-2 px-5"
+              className="btn-primary text-xs py-1.5 px-4"
             >
               Reserve
             </button>

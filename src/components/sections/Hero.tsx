@@ -277,6 +277,26 @@ export function Hero({ config }: HeroProps) {
             >
               Reserve a Table
             </button>
+            <button
+              onClick={() => document.getElementById('corporate')?.scrollIntoView({ behavior: 'smooth' })}
+              className="px-4 py-2.5 rounded-[2px] transition-all text-xs font-semibold flex items-center gap-1.5"
+              style={{
+                background: 'rgba(180,138,69,0.14)',
+                border: '1px solid rgba(180,138,69,0.35)',
+                color: '#F4EFE5',
+              }}
+              onMouseEnter={e => {
+                e.currentTarget.style.background = 'rgba(180,138,69,0.24)'
+                e.currentTarget.style.borderColor = '#B48A45'
+              }}
+              onMouseLeave={e => {
+                e.currentTarget.style.background = 'rgba(180,138,69,0.14)'
+                e.currentTarget.style.borderColor = 'rgba(180,138,69,0.35)'
+              }}
+            >
+              <span>Corporate Outings &amp; Events</span>
+              <span style={{ color: '#B48A45' }}>→</span>
+            </button>
           </motion.div>
 
           {/* Location pill */}

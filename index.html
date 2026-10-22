@@ -33,17 +33,36 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200;12..96,300;12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,600&family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
 
-    <!-- JSON-LD Restaurant Schema -->
+    <!-- JSON-LD Local Business & Brewery Schema -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "Restaurant",
+      "@type": ["Brewery", "Restaurant", "BarOrPub"],
       "name": "Peepai Brewery & Kitchen",
-      "description": "Craft beer brewpub with North Indian cuisine, pizza, Chinese, live music and outdoor seating.",
+      "alternateName": "Peepai Hebbal",
+      "description": "Premier microbrewery in Hebbal, Bengaluru featuring fresh craft beers brewed in-house, wood-fired artisanal pizza, North Indian cuisine, corporate outings, live music, and open-air sky terrace.",
       "url": "https://peepaibrewery.in/",
       "telephone": "+919632706699",
-      "servesCuisine": ["North Indian", "Pizza", "Chinese", "Craft Beer"],
+      "servesCuisine": ["Craft Beer", "North Indian", "Wood-fired Pizza", "Continental", "Asian", "Bar Snacks"],
       "priceRange": "₹₹",
+      "acceptsReservations": "True",
+      "sameAs": [
+        "https://www.instagram.com/peepaibrewery/",
+        "https://www.facebook.com/peepaibrewery/",
+        "https://www.linkedin.com/company/peepai-brewery/posts/",
+        "https://www.zomato.com/bangalore/peepai-3-hebbal-bangalore/order",
+        "https://www.swiggy.com/city/bangalore/peepai-kitchen-and-brewery-hebbal-rest631961"
+      ],
+      "areaServed": [
+        "Hebbal",
+        "Manyata Tech Park",
+        "Kirloskar Tech Park",
+        "Nagawara",
+        "Sahakar Nagar",
+        "Yelahanka",
+        "North Bengaluru",
+        "Bengaluru"
+      ],
       "aggregateRating": {
         "@type": "AggregateRating",
         "ratingValue": "4.5",
@@ -70,10 +89,12 @@
         "closes": "00:30"
       },
       "amenityFeature": [
-        { "@type": "LocationFeatureSpecification", "name": "Live Music", "value": true },
-        { "@type": "LocationFeatureSpecification", "name": "Outdoor Seating", "value": true },
-        { "@type": "LocationFeatureSpecification", "name": "Parking", "value": true },
-        { "@type": "LocationFeatureSpecification", "name": "Dancing", "value": true }
+        { "@type": "LocationFeatureSpecification", "name": "Craft Brewery", "value": true },
+        { "@type": "LocationFeatureSpecification", "name": "Corporate Event Hosting", "value": true },
+        { "@type": "LocationFeatureSpecification", "name": "Live Music Stage", "value": true },
+        { "@type": "LocationFeatureSpecification", "name": "Sky Terrace", "value": true },
+        { "@type": "LocationFeatureSpecification", "name": "Valet Parking", "value": true },
+        { "@type": "LocationFeatureSpecification", "name": "Outdoor Seating", "value": true }
       ]
     }
     </script>

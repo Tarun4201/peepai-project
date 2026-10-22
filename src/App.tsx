@@ -3,6 +3,7 @@ import { Navbar } from './components/ui/Navbar'
 import { Hero } from './components/sections/Hero'
 import { Welcome } from './components/sections/Welcome'
 import { Vibe } from './components/sections/Vibe'
+import { CorporateEvents } from './components/sections/CorporateEvents'
 import { Menu } from './components/sections/Menu'
 import { Gallery } from './components/sections/Gallery'
 import { Reserve } from './components/sections/Reserve'
@@ -17,6 +18,7 @@ export default function App() {
         <Hero config={config} />
         <Welcome config={config} />
         <Vibe />
+        <CorporateEvents config={config} />
         <Menu config={config} />
         {config.photos.length > 0 && <Gallery config={config} />}
         <Reserve config={config} />
