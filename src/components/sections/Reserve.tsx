@@ -181,6 +181,91 @@ export function Reserve({ config }: ReserveProps) {
                 <span>Call Now</span>
               </a>
             </div>
+
+            {/* Online Food Delivery (Zomato & Swiggy) */}
+            {(config.deliveryLinks?.zomato || config.deliveryLinks?.swiggy) && (
+              <div
+                className="mt-4 p-5 rounded-[2px]"
+                style={{
+                  background: 'var(--color-card)',
+                  border: '1px solid rgba(180,138,69,0.2)',
+                }}
+              >
+                <div className="flex items-center justify-between mb-3">
+                  <span
+                    style={{
+                      fontFamily: 'Manrope, sans-serif',
+                      fontSize: '0.65rem',
+                      letterSpacing: '0.14em',
+                      textTransform: 'uppercase',
+                      color: '#B48A45',
+                      fontWeight: 700,
+                    }}
+                  >
+                    Craving Peepai at Home?
+                  </span>
+                  <span
+                    style={{
+                      fontFamily: 'Manrope, sans-serif',
+                      fontSize: '0.68rem',
+                      color: 'rgba(200,189,170,0.6)',
+                    }}
+                  >
+                    Doorstep Delivery
+                  </span>
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  {config.deliveryLinks?.zomato && (
+                    <a
+                      href={config.deliveryLinks.zomato}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="py-2.5 px-3 rounded-[2px] flex items-center justify-center gap-2 transition-all text-xs font-bold"
+                      style={{
+                        background: 'rgba(226,55,68,0.12)',
+                        border: '1px solid rgba(226,55,68,0.35)',
+                        color: '#F4EFE5',
+                      }}
+                      onMouseEnter={e => {
+                        e.currentTarget.style.background = 'rgba(226,55,68,0.22)'
+                        e.currentTarget.style.borderColor = '#E23744'
+                      }}
+                      onMouseLeave={e => {
+                        e.currentTarget.style.background = 'rgba(226,55,68,0.12)'
+                        e.currentTarget.style.borderColor = 'rgba(226,55,68,0.35)'
+                      }}
+                    >
+                      <span className="w-2 h-2 rounded-full bg-[#E23744]" />
+                      <span>Order on Zomato</span>
+                    </a>
+                  )}
+                  {config.deliveryLinks?.swiggy && (
+                    <a
+                      href={config.deliveryLinks.swiggy}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="py-2.5 px-3 rounded-[2px] flex items-center justify-center gap-2 transition-all text-xs font-bold"
+                      style={{
+                        background: 'rgba(252,128,25,0.12)',
+                        border: '1px solid rgba(252,128,25,0.35)',
+                        color: '#F4EFE5',
+                      }}
+                      onMouseEnter={e => {
+                        e.currentTarget.style.background = 'rgba(252,128,25,0.22)'
+                        e.currentTarget.style.borderColor = '#FC8019'
+                      }}
+                      onMouseLeave={e => {
+                        e.currentTarget.style.background = 'rgba(252,128,25,0.12)'
+                        e.currentTarget.style.borderColor = 'rgba(252,128,25,0.35)'
+                      }}
+                    >
+                      <span className="w-2 h-2 rounded-full bg-[#FC8019]" />
+                      <span>Order on Swiggy</span>
+                    </a>
+                  )}
+                </div>
+              </div>
+            )}
           </motion.div>
 
           {/* Right Form Column (7 cols) */}

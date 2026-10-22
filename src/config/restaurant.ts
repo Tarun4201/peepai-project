@@ -69,6 +69,19 @@ export type RestaurantConfig = {
   // Menu
   menu: MenuCategory[];
 
+  // Delivery & Aggregators
+  deliveryLinks?: {
+    swiggy?: string;
+    zomato?: string;
+  };
+
+  // Social Media
+  socialLinks?: {
+    instagram?: string;
+    facebook?: string;
+    linkedin?: string;
+  };
+
   // SEO
   metaDescription: string;
   ogImage: string;
@@ -593,6 +606,19 @@ const config: RestaurantConfig = {
       ],
     },
   ],
+
+  // ─── Delivery & Aggregators ────────────────────────────
+  deliveryLinks: {
+    swiggy: 'https://www.swiggy.com/city/bangalore/peepai-kitchen-and-brewery-hebbal-rest631961',
+    zomato: 'https://www.zomato.com/bangalore/peepai-3-hebbal-bangalore/order',
+  },
+
+  // ─── Social Media Handles ──────────────────────────────
+  socialLinks: {
+    instagram: 'https://www.instagram.com/peepaibrewery/',
+    facebook: 'https://www.facebook.com/peepaibrewery/',
+    linkedin: 'https://www.linkedin.com/company/peepai-brewery/posts/',
+  },
 
   // ─── SEO ────────────────────────────────────────────────
   metaDescription:
