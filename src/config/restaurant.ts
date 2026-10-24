@@ -98,16 +98,16 @@ const config: RestaurantConfig = {
   tagline2: 'Hebbal\'s Premier Craft Brewery & Kitchen',
   logo: '/logo.png',
   about:
-    'Nestled in the heart of Hebbal, Peepai Brewery & Kitchen is more than a restaurant — it is an immersive culinary and craft beverage destination. We brew our craft beers in-house, from crisp wheat ales to rich roasty stouts, pairing them with an expansive kitchen spanning North Indian classics, wood-fired pizza, coastal seafood, and bold pan-Asian bites. Featuring live acoustic evenings, an open-air sky terrace, the iconic golden elephant relief, and a bespoke onyx cocktail bar, every visit is curated for memorable moments.',
+    'Nestled in the heart of Hebbal, Peepai Brewery & Kitchen is more than a restaurant — it is an immersive architectural and craft dining sanctuary. We brew our signature craft beers in-house, from crisp Belgian witbiers to rich roasty stouts, pairing them with an expansive kitchen spanning North Indian clay-oven classics, artisanal wood-fired pizzas, coastal delicacies, and bold pan-Asian creations. Featuring bespoke gilded birdcage lounge booths, vaulted mirrored spirit salons, an open-air sky terrace, and live acoustic sundowners, every visit is curated for unforgettable celebrations.',
   features: [
-    'In-House Craft Brewery',
-    'Live Music & Acoustic Evenings',
+    'In-House Craft Microbrewery',
+    'Gilded Birdcage Lounges',
+    'Vaulted Mirrored Spirit Salon',
     'Open-Air Sky Terrace',
-    'Dedicated Valet Parking',
-    'Curated Veg & Non-Veg Menus',
     'Wood-Fired Artisanal Pizza',
-    'Fresh Coastal Seafood',
-    'Onyx & Brass Cocktail Bar',
+    'Live Music & Acoustic Evenings',
+    'Curated Multi-Cuisine Dining',
+    'Dedicated Valet Parking',
   ],
   rating: 4.5,
   reviewCount: '5,600+',
@@ -140,6 +140,7 @@ const config: RestaurantConfig = {
 
   // ─── Photos ─────────────────────────────────────────────
   photos: [
+    'peepai-gilded-lounge.jpg',
     'peepai-double-deck-brewery.jpg',
     'peepai-cocktail-bar-canopy.jpg',
     'peepai-vip-lounge.jpg',
@@ -153,6 +154,12 @@ const config: RestaurantConfig = {
   ],
 
   galleryItems: [
+    {
+      src: 'peepai-gilded-lounge.jpg',
+      title: 'The Gilded Birdcage Lounge & Spirit Salon',
+      caption: 'Bespoke brass birdcage booths, arched mirrored spirit library, and cascading bubble chandeliers.',
+      category: 'Signature Decor',
+    },
     {
       src: 'peepai-double-deck-brewery.jpg',
       title: 'Two-Tier Brewery Deck & Emerald Bar',

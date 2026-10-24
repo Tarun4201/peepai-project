@@ -36,10 +36,12 @@ export function Welcome({ config }: Props) {
               className="relative w-full aspect-[4/5] sm:aspect-[4/5] max-h-[560px] overflow-hidden rounded-[2px] shadow-2xl border border-[rgba(200,189,170,0.12)]"
             >
               <img
-                src="/photos/peepai-elephant-mural.jpg"
-                alt="The Golden Elephant mural — Peepai's iconic interior artwork"
-                style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center 20%' }}
-                loading="lazy"
+                src="/photos/peepai-gilded-lounge.jpg"
+                alt="The Gilded Birdcage Lounge & Spirit Salon — Peepai Brewery & Kitchen architectural interior"
+                style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center 38%' }}
+                loading="eager"
+                fetchPriority="high"
+                decoding="async"
               />
               {/* Inset text label */}
               <div
@@ -47,24 +49,24 @@ export function Welcome({ config }: Props) {
                   position: 'absolute',
                   bottom: '1.25rem',
                   left: '1.25rem',
-                  padding: '0.4rem 0.8rem',
-                  background: 'rgba(23,23,19,0.72)',
-                  backdropFilter: 'blur(8px)',
-                  border: '1px solid rgba(180,138,69,0.20)',
+                  padding: '0.45rem 0.9rem',
+                  background: 'rgba(23,23,19,0.80)',
+                  backdropFilter: 'blur(10px)',
+                  border: '1px solid rgba(180,138,69,0.30)',
                   borderRadius: '2px',
                 }}
               >
                 <span
                   style={{
                     fontFamily: 'Manrope, sans-serif',
-                    fontSize: '0.60rem',
-                    letterSpacing: '0.20em',
+                    fontSize: '0.62rem',
+                    letterSpacing: '0.18em',
                     textTransform: 'uppercase',
                     color: '#B48A45',
                     fontWeight: 700,
                   }}
                 >
-                  The Golden Elephant
+                  Gilded Lounge &amp; Spirit Salon
                 </span>
               </div>
             </div>
