@@ -18,6 +18,8 @@ import {
   CheckCircle2,
   ChevronRight,
   ShieldCheck,
+  Gift,
+  Zap,
 } from 'lucide-react'
 import type { RestaurantConfig } from '../../config/restaurant'
 
@@ -25,61 +27,55 @@ interface CorporateEventsProps {
   config: RestaurantConfig
 }
 
-interface EventSpace {
+interface SpaceOption {
   id: string
   name: string
-  subtitle: string
-  capacity: string
-  image: string
   description: string
-  bestFor: string[]
-  amenities: string[]
+  capacity: string
 }
 
-const EVENT_SPACES: EventSpace[] = [
+const SPACE_OPTIONS: SpaceOption[] = [
+  {
+    id: 'main-hall',
+    name: 'Main Brewery Hall & Stage (Live Energy • Up to 250 Pax)',
+    description: 'Central dynamic dining hall with high-energy vibe, emerald velvet armchairs, big-screen AV, and DJ stage access.',
+    capacity: 'Up to 250 Guests',
+  },
   {
     id: 'mezzanine',
-    name: 'The Mezzanine Brewery Lounge',
-    subtitle: 'Overlooking Copper Brew Kettles & Emerald Bar',
+    name: 'The Mezzanine Brewery Balcony (Overlooking Bar • 60–120 Pax)',
+    description: 'Elevated architectural balcony overlooking the copper kettles and underlit emerald bar with dedicated bar team.',
     capacity: '60 – 120 Guests',
-    image: '/photos/peepai-double-deck-brewery.jpg',
-    description:
-      'A dramatic two-tier architectural balcony with lush hanging tropical planters and an exclusive underlit emerald bar. Perfect for high-energy tech team celebrations, quarterly achievements, and private corporate buyouts.',
-    bestFor: ['Tech Team Outings', 'Quarterly Milestones', 'Product Launches', 'Mixers'],
-    amenities: ['Dedicated Private Bar', 'Plug-and-Play AV & Projector', 'Dedicated Service Staff', 'Flexible Seating'],
   },
   {
     id: 'terrace',
-    name: 'Twilight Sky Terrace',
-    subtitle: 'Open-Air Bengaluru Skyline & Birdcage Cabanas',
+    name: 'Twilight Open-Sky Terrace (Al Fresco • 80–200 Pax)',
+    description: 'Al fresco open-air rooftop with panoramic Hebbal skyline vistas, cooling mist, and breezy cabana pods.',
     capacity: '80 – 200 Guests',
-    image: '/photos/peepai-twilight-sky-terrace.jpg',
-    description:
-      'Bask under the evening skies of North Bengaluru. Features panoramic skyline vistas, cozy birdcage cabana pods, cooling mist systems, and dedicated acoustic zoning for evening sundowners and grand celebrations.',
-    bestFor: ['Corporate Sundowners', 'Annual Dinners', 'Cocktail Mixers', 'Al Fresco Banquets'],
-    amenities: ['Open-Sky Views', 'Dedicated DJ Setup Area', 'Private Restrooms Access', 'Weather Protection'],
   },
   {
     id: 'vip-lounge',
-    name: 'Pop-Art VIP Suite & Lounge',
-    subtitle: 'Mirrored Ceiling & Intimate Velvet Luxury',
+    name: 'Pop-Art VIP Suite & Lounge (Intimate • 20–45 Pax)',
+    description: 'Intimate, acoustic-dampened private enclave with mirrored ceiling and bespoke floral seating.',
     capacity: '20 – 45 Guests',
-    image: '/photos/peepai-vip-lounge.jpg',
-    description:
-      'An intimate, design-forward enclave featuring mirrored ceilings, bespoke floral armchairs, and acoustic dampening. Crafted for executive dinners, confidential team milestones, and leadership summits.',
-    bestFor: ['Executive Dinners', 'Leadership Offsites', 'Department Wins', 'Client Entertaining'],
-    amenities: ['Acoustic Privacy', 'Bespoke Sommelier Service', 'Executive Lounge Seating', 'Presentation Screen'],
   },
   {
     id: 'courtyard',
-    name: 'Courtyard & Live Amphitheatre',
-    subtitle: 'Living Wall Garden & Performance Stage',
+    name: 'Courtyard & Live Amphitheatre (Open Garden • 50–100 Pax)',
+    description: 'Botanical vertical gardens, acoustic live performance stage, and relaxed courtyard seating.',
     capacity: '50 – 100 Guests',
-    image: '/photos/peepai-live-stage-courtyard.jpg',
-    description:
-      'Lush vertical botanical gardens and mountain relief art frame a live performance stage. Ideal for award nights, acoustic music mixers, and interactive team-building sessions.',
-    bestFor: ['Awards Nights', 'Acoustic Evenings', 'Company Celebrations', 'Daytime Offsites'],
-    amenities: ['Live Performance Stage', 'High-Output Sound System', 'Living Wall Backdrop', 'Tiered Seating Options'],
+  },
+  {
+    id: 'buyout',
+    name: 'Full Venue Exclusive Buyout (All Floors • 250+ Pax)',
+    description: 'Complete multi-floor takeover with all bars, decks, stages, and dedicated kitchen brigade.',
+    capacity: '250+ Guests',
+  },
+  {
+    id: 'any',
+    name: 'Open to Concierge Recommendation (Best Value & Fit)',
+    description: 'Our senior events director evaluates your group size and budget to assign the perfect zone.',
+    capacity: 'Flexible',
   },
 ]
 
@@ -120,15 +116,14 @@ export function CorporateEvents({ config }: CorporateEventsProps) {
   const ref = useRef<HTMLElement>(null)
   const inView = useInView(ref, { once: true, margin: '-80px' })
 
-  const [activeSpace, setActiveSpace] = useState<string>('mezzanine')
   const [form, setForm] = useState({
     companyName: '',
     organizerName: '',
     phone: '',
     email: '',
     eventType: 'Corporate Team Outing',
-    spacePreference: 'mezzanine',
-    guestCount: '30-75',
+    spacePreference: 'main-hall',
+    guestCount: '31-75',
     budgetTier: 'tier-2', // ₹1,600 - ₹2,400
     preferredDate: '',
     timeSlot: 'Sunset Mixer (4:00 PM – 8:00 PM)',
@@ -136,8 +131,6 @@ export function CorporateEvents({ config }: CorporateEventsProps) {
   })
 
   const [submitted, setSubmitted] = useState(false)
-
-  const selectedSpaceObj = EVENT_SPACES.find(s => s.id === activeSpace) || EVENT_SPACES[0]
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
@@ -147,7 +140,8 @@ export function CorporateEvents({ config }: CorporateEventsProps) {
 
   const handleSendWhatsApp = (e: React.FormEvent) => {
     e.preventDefault()
-    const spaceName = EVENT_SPACES.find(s => s.id === form.spacePreference)?.name || 'Any Space'
+    const selectedSpace =
+      SPACE_OPTIONS.find(s => s.id === form.spacePreference)?.name || 'Main Hall & Brewery Spaces'
     const budgetLabel =
       form.budgetTier === 'tier-1'
         ? '₹1,200 – ₹1,600 / head (Craft Beers & Heavy Starters)'
@@ -155,28 +149,30 @@ export function CorporateEvents({ config }: CorporateEventsProps) {
         ? '₹1,600 – ₹2,400 / head (Unlimited Brews & Grand Buffet)'
         : '₹2,400+ / head (Premium Spirits & Bespoke Dining)'
 
-    const text = `*CORPORATE & PRIVATE EVENT INQUIRY — PEEPAI BREWERY & KITCHEN*\n\n` +
-      `🏢 *Company / Org:* ${form.companyName || 'N/A'}\n` +
-      `👤 *Organizer:* ${form.organizerName}\n` +
+    const text = `*CORPORATE & PARTY BOOKING INQUIRY — PEEPAI BREWERY & KITCHEN*\n\n` +
+      `🏢 *Company / Group / Event:* ${form.companyName || 'Private Celebration'}\n` +
+      `👤 *Organizer / SPOC:* ${form.organizerName}\n` +
       `📱 *Contact:* ${form.phone}\n` +
       `✉️ *Work Email:* ${form.email || 'N/A'}\n` +
       `🎉 *Event Type:* ${form.eventType}\n` +
-      `📍 *Preferred Space:* ${spaceName}\n` +
+      `📍 *Preferred Seating:* ${selectedSpace}\n` +
       `👥 *Estimated Guests:* ${form.guestCount} Pax\n` +
       `💰 *Budget Target:* ${budgetLabel}\n` +
-      `📅 *Target Date:* ${form.preferredDate || 'To be discussed'}\n` +
+      `📅 *Target Date:* ${form.preferredDate || 'Flexible / To be discussed'}\n` +
       `⏰ *Time Slot:* ${form.timeSlot}\n` +
       `${form.specialRequests ? `📝 *Requirements:* ${form.specialRequests}\n` : ''}\n` +
-      `*Please share available slots and a tailored corporate package proposal.*`
+      `🎁 *Direct Web Privilege:* Requesting Complimentary Brewer's Craft Tasting Flight for Host & Priority Slot Hold.\n\n` +
+      `*Please share available packages and corporate GST estimate.*`
 
     window.open(`https://wa.me/${config.whatsapp}?text=${encodeURIComponent(text)}`, '_blank')
     setSubmitted(true)
   }
 
   const handleSendEmail = () => {
-    const spaceName = EVENT_SPACES.find(s => s.id === form.spacePreference)?.name || 'Any Space'
-    const subject = `Corporate Event RFP: ${form.companyName} at Peepai Brewery`
-    const body = `Hi Peepai Events Desk,\n\nWe would like to request a corporate event proposal for ${form.companyName}.\n\nDetails:\n- Organizer: ${form.organizerName}\n- Phone: ${form.phone}\n- Event Type: ${form.eventType}\n- Preferred Space: ${spaceName}\n- Guest Count: ${form.guestCount}\n- Date: ${form.preferredDate}\n- Time Slot: ${form.timeSlot}\n\nNotes: ${form.specialRequests}\n\nKindly send across your event packages.`
+    const selectedSpace =
+      SPACE_OPTIONS.find(s => s.id === form.spacePreference)?.name || 'Main Hall & Brewery Spaces'
+    const subject = `Corporate & Party Booking RFP: ${form.companyName || form.organizerName} at Peepai Brewery`
+    const body = `Hi Peepai Events Team,\n\nI am requesting a corporate / party booking proposal.\n\nEvent Parameters:\n- Company / Group: ${form.companyName}\n- Organizer / SPOC: ${form.organizerName}\n- Phone / WhatsApp: ${form.phone}\n- Event Type: ${form.eventType}\n- Preferred Setup: ${selectedSpace}\n- Guest Count: ${form.guestCount}\n- Target Date: ${form.preferredDate}\n- Time Slot: ${form.timeSlot}\n\nSpecial Requirements: ${form.specialRequests}\n\n*Direct Web Privilege: Please include the complimentary craft beer tasting flight for our host team in the quote.*\n\nKindly share package details and corporate GST invoicing breakdown.`
     window.location.href = `mailto:events@peepaibrewery.in?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
   }
 
@@ -225,7 +221,7 @@ export function CorporateEvents({ config }: CorporateEventsProps) {
                 color: '#B48A45',
               }}
             >
-              Corporate &amp; Private Events
+              Corporate &amp; Party Bookings • Open for 2026
             </span>
           </motion.div>
 
@@ -259,11 +255,11 @@ export function CorporateEvents({ config }: CorporateEventsProps) {
               color: 'rgba(200,189,170,0.8)',
             }}
           >
-            From high-energy IT team outings (Manyata &amp; Kirloskar Tech Parks) to product launch sundowners and executive dinners. Our multi-tier brewery spaces, craft kegs, and personalized concierges make your events effortless.
+            From high-energy tech team outings (Manyata &amp; Kirloskar Tech Parks) to milestone birthday parties, product launch sundowners, and executive dinners. Our multi-tier brewery spaces, craft kegs, and personalized concierges make planning effortless.
           </motion.p>
         </div>
 
-        {/* ── 1. Interactive Event Spaces Showcase ── */}
+        {/* ── 1. Unified Open to Corporate & Party Bookings Showcase ── */}
         <div className="mb-20">
           <div className="flex items-center justify-between flex-wrap gap-4 mb-6 border-b border-[rgba(200,189,170,0.12)] pb-4">
             <div>
@@ -278,43 +274,37 @@ export function CorporateEvents({ config }: CorporateEventsProps) {
                   fontWeight: 700,
                 }}
               >
-                Tailored Venues
+                Bengaluru's Premier Venue
               </span>
               <h3
                 style={{
                   fontFamily: '"Cormorant Garamond", Georgia, serif',
-                  fontSize: '1.75rem',
+                  fontSize: 'clamp(1.75rem, 3vw, 2.4rem)',
                   color: '#F4EFE5',
                   fontWeight: 600,
+                  lineHeight: 1.2,
                 }}
               >
-                Choose Your Space
+                Open to Corporate &amp; Party Bookings
               </h3>
             </div>
 
-            {/* Space selector tabs */}
-            <div className="flex items-center gap-2 overflow-x-auto pb-1 max-w-full">
-              {EVENT_SPACES.map(space => (
-                <button
-                  key={space.id}
-                  onClick={() => {
-                    setActiveSpace(space.id)
-                    setForm(f => ({ ...f, spacePreference: space.id }))
-                  }}
-                  className="px-3.5 py-2 rounded-[2px] transition-all text-xs font-semibold whitespace-nowrap"
-                  style={{
-                    background: activeSpace === space.id ? '#B48A45' : 'rgba(30,28,24,0.7)',
-                    color: activeSpace === space.id ? '#171713' : 'rgba(244,239,229,0.75)',
-                    border: activeSpace === space.id ? '1px solid #B48A45' : '1px solid rgba(180,138,69,0.2)',
-                  }}
-                >
-                  {space.name.split(' ')[1] || space.name}
-                </button>
-              ))}
+            <div className="flex items-center gap-2">
+              <span
+                className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold"
+                style={{
+                  background: 'rgba(37,211,102,0.12)',
+                  border: '1px solid rgba(37,211,102,0.3)',
+                  color: '#25D366',
+                }}
+              >
+                <span className="w-2 h-2 rounded-full bg-[#25D366] animate-pulse" />
+                Calendar Open for 2026 Outings &amp; Celebrations
+              </span>
             </div>
           </div>
 
-          {/* Active Space Detail Card */}
+          {/* Unified Showcase Card */}
           <div
             className="rounded-[2px] overflow-hidden grid lg:grid-cols-12 gap-0"
             style={{
@@ -323,128 +313,137 @@ export function CorporateEvents({ config }: CorporateEventsProps) {
               boxShadow: '0 20px 40px rgba(0,0,0,0.4)',
             }}
           >
-            {/* Space Image (7 cols) */}
-            <div className="lg:col-span-7 relative min-h-[340px] sm:min-h-[420px] overflow-hidden">
+            {/* Visual Showcase (7 cols) */}
+            <div className="lg:col-span-7 relative min-h-[380px] sm:min-h-[460px] overflow-hidden group">
               <img
-                src={selectedSpaceObj.image}
-                alt={selectedSpaceObj.name}
-                className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
-                style={{ objectPosition: 'center 35%' }}
+                src="/photos/peepai-corporate-gatherings.jpg"
+                alt="Peepai Brewery & Kitchen bustling main dining hall, live stage, and corporate party gathering"
+                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                style={{ objectPosition: 'center 40%' }}
               />
               <div
                 className="absolute inset-0"
                 style={{
                   background:
-                    'linear-gradient(to top, rgba(23,23,19,0.85) 0%, rgba(23,23,19,0.2) 60%, transparent 100%)',
+                    'linear-gradient(to top, rgba(23,23,19,0.92) 0%, rgba(23,23,19,0.35) 50%, rgba(23,23,19,0.1) 100%)',
                 }}
               />
-              {/* Capacity badge */}
-              <div className="absolute top-4 left-4 flex items-center gap-2 px-3 py-1.5 rounded-[2px] glass-strong border border-[rgba(180,138,69,0.35)]">
-                <Users className="w-3.5 h-3.5 text-[#B48A45]" />
+
+              {/* Floating badges */}
+              <div className="absolute top-4 left-4 flex items-center gap-2 px-3.5 py-1.5 rounded-[2px] glass-strong border border-[rgba(180,138,69,0.35)] shadow-lg">
+                <Users className="w-4 h-4 text-[#B48A45]" />
                 <span className="text-xs font-bold text-[#F4EFE5] tracking-wide">
-                  Capacity: {selectedSpaceObj.capacity}
+                  Accommodating 15 to 250+ Guests
                 </span>
+              </div>
+
+              <div className="absolute top-4 right-4 flex items-center gap-2 px-3 py-1.5 rounded-[2px] glass-strong border border-[rgba(180,138,69,0.35)] shadow-lg">
+                <Zap className="w-3.5 h-3.5 text-[#B48A45]" />
+                <span className="text-[0.72rem] font-bold text-[#B48A45] tracking-wide uppercase">
+                  Fast-Track Web Concierge
+                </span>
+              </div>
+
+              {/* Bottom overlay specifications */}
+              <div className="absolute bottom-4 left-4 right-4 p-4 rounded-[2px] glass-strong border border-[rgba(200,189,170,0.15)] backdrop-blur-md">
+                <div className="flex flex-wrap items-center gap-y-2 gap-x-4 text-[0.75rem] text-[rgba(244,239,229,0.9)]">
+                  <span className="flex items-center gap-1.5 font-medium">
+                    <CheckCircle2 className="w-3.5 h-3.5 text-[#B48A45]" />
+                    Two-Tier Brewery &amp; Emerald Bar
+                  </span>
+                  <span className="flex items-center gap-1.5 font-medium">
+                    <CheckCircle2 className="w-3.5 h-3.5 text-[#B48A45]" />
+                    4K Stage AV, Projector &amp; Wireless Mics
+                  </span>
+                  <span className="flex items-center gap-1.5 font-medium">
+                    <CheckCircle2 className="w-3.5 h-3.5 text-[#B48A45]" />
+                    Fresh Craft Beer Kegs &amp; Tailored Buffets
+                  </span>
+                  <span className="flex items-center gap-1.5 font-medium">
+                    <CheckCircle2 className="w-3.5 h-3.5 text-[#B48A45]" />
+                    Valet Parking on Main Bellary Road
+                  </span>
+                </div>
               </div>
             </div>
 
-            {/* Space Information (5 cols) */}
+            {/* Information & Why Booking on Website Beats Calling (5 cols) */}
             <div className="lg:col-span-5 p-7 sm:p-9 flex flex-col justify-between">
               <div>
-                <span
-                  style={{
-                    display: 'block',
-                    fontFamily: 'Manrope, sans-serif',
-                    fontSize: '0.62rem',
-                    letterSpacing: '0.18em',
-                    textTransform: 'uppercase',
-                    color: '#B48A45',
-                    fontWeight: 700,
-                    marginBottom: '0.35rem',
-                  }}
-                >
-                  {selectedSpaceObj.subtitle}
-                </span>
+                <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-[2px] bg-[rgba(180,138,69,0.1)] border border-[rgba(180,138,69,0.25)] mb-3">
+                  <Gift className="w-3.5 h-3.5 text-[#B48A45]" />
+                  <span className="text-[0.66rem] font-bold tracking-wider uppercase text-[#B48A45]">
+                    Direct Web Booking Privileges
+                  </span>
+                </div>
+
                 <h4
                   style={{
                     fontFamily: '"Cormorant Garamond", Georgia, serif',
-                    fontSize: '2rem',
+                    fontSize: '1.85rem',
                     fontWeight: 600,
                     color: '#F4EFE5',
-                    lineHeight: 1.15,
-                    marginBottom: '1rem',
+                    lineHeight: 1.2,
+                    marginBottom: '0.85rem',
                   }}
                 >
-                  {selectedSpaceObj.name}
+                  Why Booking Online Beats Calling Us Directly
                 </h4>
 
                 <p
                   style={{
                     fontFamily: 'Manrope, sans-serif',
                     fontSize: '0.85rem',
-                    lineHeight: 1.65,
+                    lineHeight: 1.6,
                     color: 'rgba(200,189,170,0.85)',
-                    marginBottom: '1.5rem',
+                    marginBottom: '1.25rem',
                   }}
                 >
-                  {selectedSpaceObj.description}
+                  During peak hours, brewery floor music and bar chatter make phone calls loud and prone to misheard details. Submitting your parameters via our website takes under 60 seconds and unlocks exclusive host privileges:
                 </p>
 
-                {/* Best For Tags */}
-                <div className="mb-6">
-                  <span
-                    style={{
-                      display: 'block',
-                      fontFamily: 'Manrope, sans-serif',
-                      fontSize: '0.62rem',
-                      letterSpacing: '0.14em',
-                      textTransform: 'uppercase',
-                      color: 'rgba(200,189,170,0.6)',
-                      marginBottom: '0.5rem',
-                      fontWeight: 600,
-                    }}
-                  >
-                    Recommended For
-                  </span>
-                  <div className="flex flex-wrap gap-1.5">
-                    {selectedSpaceObj.bestFor.map(item => (
-                      <span
-                        key={item}
-                        className="px-2.5 py-1 rounded-[2px] text-[0.72rem] font-medium"
-                        style={{
-                          background: 'rgba(180,138,69,0.12)',
-                          border: '1px solid rgba(180,138,69,0.22)',
-                          color: '#F4EFE5',
-                        }}
-                      >
-                        {item}
-                      </span>
-                    ))}
+                {/* 4 Compelling Value Cards */}
+                <div className="space-y-3 mb-6">
+                  <div className="p-3 rounded-[2px] bg-[rgba(180,138,69,0.08)] border border-[rgba(180,138,69,0.2)] flex items-start gap-3">
+                    <div className="w-7 h-7 rounded-[2px] bg-[rgba(180,138,69,0.15)] flex items-center justify-center text-[#B48A45] flex-shrink-0 mt-0.5">
+                      <Gift className="w-4 h-4" />
+                    </div>
+                    <div>
+                      <h5 className="text-xs font-bold text-[#F4EFE5] mb-0.5">
+                        Free Master Brewer Tasting Flight for Host
+                      </h5>
+                      <p className="text-[0.74rem] text-[rgba(200,189,170,0.75)] leading-snug">
+                        Organizers who book via this portal receive a complimentary craft sampler &amp; brewer consultation upon arrival.
+                      </p>
+                    </div>
                   </div>
-                </div>
 
-                {/* Included Amenities */}
-                <div className="mb-6">
-                  <span
-                    style={{
-                      display: 'block',
-                      fontFamily: 'Manrope, sans-serif',
-                      fontSize: '0.62rem',
-                      letterSpacing: '0.14em',
-                      textTransform: 'uppercase',
-                      color: 'rgba(200,189,170,0.6)',
-                      marginBottom: '0.5rem',
-                      fontWeight: 600,
-                    }}
-                  >
-                    Key Features &amp; Setup
-                  </span>
-                  <div className="grid grid-cols-2 gap-2">
-                    {selectedSpaceObj.amenities.map(am => (
-                      <div key={am} className="flex items-center gap-1.5 text-xs text-[rgba(244,239,229,0.8)]">
-                        <CheckCircle2 className="w-3.5 h-3.5 text-[#B48A45] flex-shrink-0" />
-                        <span className="truncate">{am}</span>
-                      </div>
-                    ))}
+                  <div className="p-3 rounded-[2px] bg-[rgba(30,28,24,0.6)] border border-[rgba(200,189,170,0.12)] flex items-start gap-3">
+                    <div className="w-7 h-7 rounded-[2px] bg-[rgba(37,211,102,0.12)] flex items-center justify-center text-[#25D366] flex-shrink-0 mt-0.5">
+                      <Zap className="w-4 h-4" />
+                    </div>
+                    <div>
+                      <h5 className="text-xs font-bold text-[#F4EFE5] mb-0.5">
+                        Guaranteed WhatsApp RFP in &lt;15 Mins
+                      </h5>
+                      <p className="text-[0.74rem] text-[rgba(200,189,170,0.75)] leading-snug">
+                        Dispatches a structured, itemized brief directly to our Senior Events Director with prioritized queue status.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="p-3 rounded-[2px] bg-[rgba(30,28,24,0.6)] border border-[rgba(200,189,170,0.12)] flex items-start gap-3">
+                    <div className="w-7 h-7 rounded-[2px] bg-[rgba(180,138,69,0.15)] flex items-center justify-center text-[#B48A45] flex-shrink-0 mt-0.5">
+                      <FileText className="w-4 h-4" />
+                    </div>
+                    <div>
+                      <h5 className="text-xs font-bold text-[#F4EFE5] mb-0.5">
+                        Instant GST Invoice &amp; PO Estimate
+                      </h5>
+                      <p className="text-[0.74rem] text-[rgba(200,189,170,0.75)] leading-snug">
+                        Ready-to-submit itemized proposal with corporate GST input credit details for seamless finance reimbursement.
+                      </p>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -456,7 +455,7 @@ export function CorporateEvents({ config }: CorporateEventsProps) {
                 }}
                 className="btn-primary w-full justify-center py-3 text-xs"
               >
-                <span>Request Availability for {selectedSpaceObj.name.split(' ')[1] || 'this Space'}</span>
+                <span>Customize Your Event Inquiry Below</span>
                 <ChevronRight className="w-3.5 h-3.5" />
               </button>
             </div>
@@ -484,64 +483,61 @@ export function CorporateEvents({ config }: CorporateEventsProps) {
                 fontSize: '2.2rem',
                 color: '#F4EFE5',
                 fontWeight: 600,
+                marginTop: '0.25rem',
               }}
             >
-              Engineered for Seamless Corporate Hosting
+              Engineered for Seamless Outings &amp; Parties
             </h3>
           </div>
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-            {CORPORATE_PERKS.map((perk, idx) => (
-              <motion.div
-                key={idx}
-                initial={{ opacity: 0, y: 16 }}
-                animate={inView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.5, delay: 0.1 * idx }}
-                className="p-6 rounded-[2px] transition-all hover:translate-y-[-2px]"
-                style={{
-                  background: 'var(--color-card)',
-                  border: '1px solid rgba(180,138,69,0.18)',
-                }}
-              >
-                <div
-                  className="w-10 h-10 rounded-[2px] flex items-center justify-center mb-4"
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            {CORPORATE_PERKS.map((perk, i) => {
+              const Icon = perk.icon
+              return (
+                <motion.div
+                  key={perk.title}
+                  initial={{ opacity: 0, y: 16 }}
+                  animate={inView ? { opacity: 1, y: 0 } : {}}
+                  transition={{ duration: 0.5, delay: 0.1 * i }}
+                  className="p-6 rounded-[2px] transition-all hover:-translate-y-1"
                   style={{
-                    background: 'rgba(180,138,69,0.14)',
-                    border: '1px solid rgba(180,138,69,0.3)',
-                    color: '#B48A45',
+                    background: 'var(--color-card)',
+                    border: '1px solid rgba(180,138,69,0.18)',
                   }}
                 >
-                  <perk.icon className="w-5 h-5" />
-                </div>
-                <h4
-                  style={{
-                    fontFamily: '"Cormorant Garamond", Georgia, serif',
-                    fontSize: '1.25rem',
-                    color: '#F4EFE5',
-                    fontWeight: 600,
-                    marginBottom: '0.4rem',
-                  }}
-                >
-                  {perk.title}
-                </h4>
-                <p
-                  style={{
-                    fontFamily: 'Manrope, sans-serif',
-                    fontSize: '0.8rem',
-                    lineHeight: 1.55,
-                    color: 'rgba(200,189,170,0.75)',
-                  }}
-                >
-                  {perk.desc}
-                </p>
-              </motion.div>
-            ))}
+                  <div className="w-10 h-10 rounded-[2px] bg-[rgba(180,138,69,0.12)] flex items-center justify-center text-[#B48A45] mb-4">
+                    <Icon className="w-5 h-5" />
+                  </div>
+                  <h4
+                    style={{
+                      fontFamily: '"Cormorant Garamond", Georgia, serif',
+                      fontSize: '1.25rem',
+                      fontWeight: 600,
+                      color: '#F4EFE5',
+                      marginBottom: '0.4rem',
+                    }}
+                  >
+                    {perk.title}
+                  </h4>
+                  <p
+                    style={{
+                      fontFamily: 'Manrope, sans-serif',
+                      fontSize: '0.8rem',
+                      lineHeight: 1.6,
+                      color: 'rgba(200,189,170,0.75)',
+                    }}
+                  >
+                    {perk.desc}
+                  </p>
+                </motion.div>
+              )
+            })}
           </div>
         </div>
 
-        {/* ── 3. High-Converting Corporate Booking Engine ── */}
+        {/* ── 3. High-Converting Corporate & Party Inquiry Portal ── */}
         <div id="corporate-form" className="grid lg:grid-cols-12 gap-8 items-start">
-          {/* Left Column: Direct Concierge & Assurance (5 cols) */}
+          {/* Left Column: Direct Desk & Web Reassurance (5 cols) */}
           <div className="lg:col-span-5">
             <span
               style={{
@@ -553,7 +549,7 @@ export function CorporateEvents({ config }: CorporateEventsProps) {
                 fontWeight: 700,
               }}
             >
-              Dedicated Event Desk
+              Direct Event Concierge
             </span>
             <h3
               style={{
@@ -567,7 +563,7 @@ export function CorporateEvents({ config }: CorporateEventsProps) {
               }}
             >
               Get a Customized Proposal <br />
-              <span style={{ color: '#B48A45', fontStyle: 'italic' }}>Within 30 Minutes</span>
+              <span style={{ color: '#B48A45', fontStyle: 'italic' }}>Within 15 Minutes</span>
             </h3>
 
             <p
@@ -576,39 +572,38 @@ export function CorporateEvents({ config }: CorporateEventsProps) {
                 fontSize: '0.85rem',
                 lineHeight: 1.6,
                 color: 'rgba(200,189,170,0.8)',
-                marginBottom: '2rem',
+                marginBottom: '1.75rem',
               }}
             >
-              Our dedicated corporate planning team works with your date, group size, and dietary requirements to structure fixed packages, drink coupons, and tailored invoicing.
+              Skip the noisy phone calls and busy bar queues. Submitting through this portal routes your event brief with priority status directly to the Senior Events Director with itemized package options and corporate GST invoicing.
             </p>
+
+            {/* Why web inquiry is superior */}
+            <div className="p-4 rounded-[2px] bg-[rgba(180,138,69,0.06)] border border-[rgba(180,138,69,0.2)] mb-6">
+              <span className="block text-[0.68rem] tracking-wider uppercase font-bold text-[#B48A45] mb-2">
+                Why Organizers Prefer Web Inquiries
+              </span>
+              <ul className="space-y-2 text-xs text-[rgba(244,239,229,0.85)]">
+                <li className="flex items-start gap-2">
+                  <CheckCircle2 className="w-3.5 h-3.5 text-[#B48A45] flex-shrink-0 mt-0.5" />
+                  <span><strong>100% Written Accuracy:</strong> Dates, guest counts, and dietary requirements recorded cleanly without miscommunication.</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <CheckCircle2 className="w-3.5 h-3.5 text-[#B48A45] flex-shrink-0 mt-0.5" />
+                  <span><strong>Priority Queue:</strong> Web submissions are automatically flagged for fastest executive response.</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <CheckCircle2 className="w-3.5 h-3.5 text-[#B48A45] flex-shrink-0 mt-0.5" />
+                  <span><strong>Host Tasting Perk:</strong> Automatically registers your complimentary brewer's craft flight.</span>
+                </li>
+              </ul>
+            </div>
 
             {/* Direct contact shortcuts */}
             <div className="flex flex-col gap-3 mb-6">
               <a
-                href={`tel:${config.phone}`}
-                className="p-4 rounded-[2px] flex items-center justify-between transition-colors group"
-                style={{
-                  background: 'var(--color-card)',
-                  border: '1px solid rgba(180,138,69,0.22)',
-                }}
-              >
-                <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-[2px] bg-[rgba(180,138,69,0.12)] flex items-center justify-center text-[#B48A45]">
-                    <Phone className="w-4 h-4" />
-                  </div>
-                  <div>
-                    <span className="block text-[0.62rem] uppercase tracking-wider text-[#B48A45] font-bold">
-                      Corporate Hotline
-                    </span>
-                    <span className="text-sm font-bold text-[#F4EFE5]">{config.phone}</span>
-                  </div>
-                </div>
-                <span className="text-xs text-[#B48A45] group-hover:underline">Call Desk →</span>
-              </a>
-
-              <a
                 href={`https://wa.me/${config.whatsapp}?text=${encodeURIComponent(
-                  'Hi Peepai Events Team, I want to inquire about hosting a corporate outing.'
+                  'Hi Peepai Events Team, I want to inquire about hosting a corporate / party booking.'
                 )}`}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -631,6 +626,28 @@ export function CorporateEvents({ config }: CorporateEventsProps) {
                 </div>
                 <span className="text-xs text-[#25D366] group-hover:underline">Chat Now →</span>
               </a>
+
+              <a
+                href={`tel:${config.phone}`}
+                className="p-4 rounded-[2px] flex items-center justify-between transition-colors group"
+                style={{
+                  background: 'var(--color-card)',
+                  border: '1px solid rgba(180,138,69,0.22)',
+                }}
+              >
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-[2px] bg-[rgba(180,138,69,0.12)] flex items-center justify-center text-[#B48A45]">
+                    <Phone className="w-4 h-4" />
+                  </div>
+                  <div>
+                    <span className="block text-[0.62rem] uppercase tracking-wider text-[#B48A45] font-bold">
+                      Corporate Hotline
+                    </span>
+                    <span className="text-sm font-bold text-[#F4EFE5]">{config.phone}</span>
+                  </div>
+                </div>
+                <span className="text-xs text-[#B48A45] group-hover:underline">Call Desk →</span>
+              </a>
             </div>
 
             {/* Trust badge */}
@@ -647,7 +664,7 @@ export function CorporateEvents({ config }: CorporateEventsProps) {
             </div>
           </div>
 
-          {/* Right Column: Structured Corporate RFP Form (7 cols) */}
+          {/* Right Column: Structured Corporate & Party RFP Form (7 cols) */}
           <div className="lg:col-span-7">
             <div
               className="p-7 sm:p-9 rounded-[2px]"
@@ -665,7 +682,7 @@ export function CorporateEvents({ config }: CorporateEventsProps) {
                   marginBottom: '0.4rem',
                 }}
               >
-                Corporate Event Inquiry &amp; Estimate
+                Corporate &amp; Party Inquiry Engine
               </h4>
               <p
                 style={{
@@ -675,11 +692,11 @@ export function CorporateEvents({ config }: CorporateEventsProps) {
                   marginBottom: '1.75rem',
                 }}
               >
-                Fill in your team event parameters below. We’ll generate an instant formatted RFP straight to our events manager.
+                Configure your event parameters below. We’ll generate an instant formatted RFP directly to our events manager with your host tasting privilege applied.
               </p>
 
               <form onSubmit={handleSendWhatsApp} className="flex flex-col gap-4">
-                {/* Company & Organizer Name */}
+                {/* Company / Group & Organizer Name */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <label
@@ -687,7 +704,7 @@ export function CorporateEvents({ config }: CorporateEventsProps) {
                       className="block text-[0.68rem] tracking-wider uppercase font-bold text-[#B48A45] mb-1.5"
                     >
                       <Building2 className="w-3 h-3 inline mr-1" />
-                      Company / Organization Name *
+                      Company / Group / Event Name *
                     </label>
                     <input
                       id="companyName"
@@ -696,7 +713,7 @@ export function CorporateEvents({ config }: CorporateEventsProps) {
                       required
                       value={form.companyName}
                       onChange={handleChange}
-                      placeholder="e.g. Amazon, Cognizant, Target..."
+                      placeholder="e.g. Amazon, Cognizant, Target, Birthday Bash..."
                       className="w-full px-3.5 py-2.5 rounded-[2px] text-sm text-[#F4EFE5] outline-none"
                       style={{
                         background: 'rgba(23,23,19,0.6)',
@@ -765,7 +782,7 @@ export function CorporateEvents({ config }: CorporateEventsProps) {
                       htmlFor="email"
                       className="block text-[0.68rem] tracking-wider uppercase font-bold text-[#B48A45] mb-1.5"
                     >
-                      Work Email (For Formal Quote)
+                      Email (For Formal Quote &amp; GST PO)
                     </label>
                     <input
                       id="email"
@@ -785,7 +802,7 @@ export function CorporateEvents({ config }: CorporateEventsProps) {
                   </div>
                 </div>
 
-                {/* Event Type & Preferred Venue */}
+                {/* Event Type & Atmosphere Preference */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <label
@@ -807,9 +824,10 @@ export function CorporateEvents({ config }: CorporateEventsProps) {
                     >
                       <option value="Corporate Team Outing">Corporate Team Outing</option>
                       <option value="Quarterly Party & Celebration">Quarterly Party &amp; Celebration</option>
+                      <option value="Birthday & Private Social Celebration">Birthday &amp; Private Social Celebration</option>
                       <option value="Product Launch & Mixer">Product Launch &amp; Mixer</option>
                       <option value="Executive Dinner & Offsite">Executive Dinner &amp; Offsite</option>
-                      <option value="Full Venue Buyout">Full Venue Buyout (250+ Pax)</option>
+                      <option value="Full Venue Buyout">Full Venue Buyout (150–250+ Pax)</option>
                     </select>
                   </div>
 
@@ -818,7 +836,7 @@ export function CorporateEvents({ config }: CorporateEventsProps) {
                       htmlFor="spacePreference"
                       className="block text-[0.68rem] tracking-wider uppercase font-bold text-[#B48A45] mb-1.5"
                     >
-                      Preferred Space
+                      Seating &amp; Atmosphere Preference
                     </label>
                     <select
                       id="spacePreference"
@@ -831,11 +849,11 @@ export function CorporateEvents({ config }: CorporateEventsProps) {
                         border: '1px solid rgba(200,189,170,0.2)',
                       }}
                     >
-                      <option value="mezzanine">The Mezzanine Brewery Lounge (60–120 Pax)</option>
-                      <option value="terrace">Twilight Sky Terrace (80–200 Pax)</option>
-                      <option value="vip-lounge">Pop-Art VIP Suite (20–45 Pax)</option>
-                      <option value="courtyard">Courtyard Amphitheatre (50–100 Pax)</option>
-                      <option value="any">Open to Concierge Recommendation</option>
+                      {SPACE_OPTIONS.map(opt => (
+                        <option key={opt.id} value={opt.id}>
+                          {opt.name}
+                        </option>
+                      ))}
                     </select>
                   </div>
                 </div>
@@ -973,14 +991,22 @@ export function CorporateEvents({ config }: CorporateEventsProps) {
                   />
                 </div>
 
+                {/* Direct Web Privilege Reassurance Banner */}
+                <div className="p-3 rounded-[2px] bg-[rgba(180,138,69,0.08)] border border-[rgba(180,138,69,0.22)] flex items-center gap-2.5">
+                  <Gift className="w-4 h-4 text-[#B48A45] flex-shrink-0" />
+                  <span className="text-[0.74rem] text-[rgba(244,239,229,0.9)]">
+                    <strong className="text-[#B48A45]">Web Booking Privilege:</strong> Organizing via our website automatically unlocks a <strong>Complimentary Craft Tasting Flight</strong> for the host team + priority &lt;15 min manager response.
+                  </span>
+                </div>
+
                 {/* Submission CTA Buttons */}
                 <div className="pt-2 flex flex-col sm:flex-row gap-3">
                   <button
                     type="submit"
-                    className="btn-primary flex-1 justify-center py-3.5 text-xs"
+                    className="btn-primary flex-1 justify-center py-3.5 text-xs font-bold"
                   >
                     <Send className="w-4 h-4" />
-                    <span>Send Inquiry on WhatsApp</span>
+                    <span>Send Inquiry on WhatsApp (Instant Response)</span>
                   </button>
 
                   <button

@@ -140,6 +140,7 @@ const config: RestaurantConfig = {
 
   // ─── Photos ─────────────────────────────────────────────
   photos: [
+    'peepai-corporate-gatherings.jpg',
     'peepai-gilded-lounge.jpg',
     'peepai-double-deck-brewery.jpg',
     'peepai-cocktail-bar-canopy.jpg',
@@ -154,6 +155,12 @@ const config: RestaurantConfig = {
   ],
 
   galleryItems: [
+    {
+      src: 'peepai-corporate-gatherings.jpg',
+      title: 'Main Hall Corporate Gatherings & Private Celebrations',
+      caption: 'Dynamic two-tier dining hall, emerald velvet seating, big-screen stage, and dedicated private brewery bar for tech team outings & milestones.',
+      category: 'Corporate & Events',
+    },
     {
       src: 'peepai-gilded-lounge.jpg',
       title: 'The Gilded Birdcage Lounge & Spirit Salon',
