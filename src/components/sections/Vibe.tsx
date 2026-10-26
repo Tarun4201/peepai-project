@@ -1,38 +1,340 @@
-import { useRef } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import { motion, useInView } from 'framer-motion'
-import { Music, Beer, Trees, Sparkles } from 'lucide-react'
+import { Play, Pause, Volume2, VolumeX, Beer, Utensils, Sparkles } from 'lucide-react'
 import { StarRating } from '../ui/StarRating'
 
-const EXPERIENCES = [
+interface ExperienceVideoItem {
+  id: string
+  title: string
+  desc: string
+  videoSrc: string
+  posterSrc: string
+  tag: string
+  badge: string
+  Icon: typeof Beer
+  objectPosition: string
+}
+
+const VIDEO_EXPERIENCES: ExperienceVideoItem[] = [
   {
-    Icon: Music,
-    title: 'Live Acoustic & DJ Evenings',
-    desc: 'Curated musical performances and acoustic sessions setting the pulse for Bengaluru nights in our courtyard amphitheatre.',
-    highlight: 'Weekly Acts',
-    photo: '/photos/ambience4.jpg',
-  },
-  {
+    id: 'brewery',
+    title: 'Our Brewery',
+    desc: 'Discover a distinctive brewery experience with refreshing pours, rich flavours, and a welcoming atmosphere.',
+    videoSrc: '/video/ourbrewarypeepai.mp4',
+    posterSrc: '/video/ourbrewarypeepai-poster.jpg',
+    tag: '01 / Microbrewery',
+    badge: 'Fresh Craft On Tap',
     Icon: Beer,
-    title: 'In-House Microbrewery & Decks',
-    desc: 'European malts and authentic craft brews on tap across our dual-level open-air brewery deck.',
-    highlight: 'Fresh Batches',
-    photo: '/photos/ambience6.jpg',
+    objectPosition: 'center 35%',
   },
   {
-    Icon: Trees,
-    title: 'Twilight Sky Terrace',
-    desc: 'Sprawling al fresco terrace seating with cool Bengaluru breezes, cozy cabanas, and panoramic city views.',
-    highlight: 'Panoramic Views',
-    photo: '/photos/ambience2.jpg',
+    id: 'kitchen',
+    title: 'Our Kitchen',
+    desc: 'Explore a variety of food experiences, from satisfying bites to dishes made for sharing.',
+    videoSrc: '/video/ourkitchenpeepai.mp4',
+    posterSrc: '/video/ourkitchenpeepai-poster.jpg',
+    tag: '02 / Culinary',
+    badge: 'Artisanal Kitchen',
+    Icon: Utensils,
+    objectPosition: 'center 40%',
   },
   {
+    id: 'environment',
+    title: 'Our Environment',
+    desc: 'Enjoy an inviting space for memorable gatherings, relaxed evenings, and good times together.',
+    videoSrc: '/video/ourenvironmentpeepai.mp4',
+    posterSrc: '/video/ourenvironmentpeepai-poster.jpg',
+    tag: '03 / Atmosphere',
+    badge: 'Vibrant Spaces',
     Icon: Sparkles,
-    title: 'The Pop-Art VIP Suite',
-    desc: 'Intimate bespoke lounge with floral wingbacks, mirrored ceiling art, and private dining elegance.',
-    highlight: 'Signature Decor',
-    photo: '/photos/ambience3.jpg',
+    objectPosition: 'center 35%',
   },
 ]
+
+function VideoExperienceCard({
+  item,
+  index,
+  inView,
+}: {
+  item: ExperienceVideoItem
+  index: number
+  inView: boolean
+}) {
+  const videoRef = useRef<HTMLVideoElement>(null)
+  const containerRef = useRef<HTMLDivElement>(null)
+  const [isPlaying, setIsPlaying] = useState(true)
+  const [isMuted, setIsMuted] = useState(true)
+  const [isLoaded, setIsLoaded] = useState(false)
+  const [hasError, setHasError] = useState(false)
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false)
+
+  // Respect prefers-reduced-motion
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
+    setPrefersReducedMotion(mediaQuery.matches)
+    const handler = (e: MediaQueryListEvent) => setPrefersReducedMotion(e.matches)
+    mediaQuery.addEventListener('change', handler)
+    return () => mediaQuery.removeEventListener('change', handler)
+  }, [])
+
+  // Lazy-playback: IntersectionObserver plays when visible, pauses when off-screen
+  useEffect(() => {
+    const video = videoRef.current
+    const container = containerRef.current
+    if (!video || !container || prefersReducedMotion) return
+
+    const observer = new IntersectionObserver(
+      entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting && entry.intersectionRatio >= 0.2) {
+            if (video.paused && isPlaying) {
+              video.play().catch(() => {
+                // Low-power mode or autoplay policy fallback
+              })
+            }
+          } else {
+            if (!video.paused) {
+              video.pause()
+            }
+          }
+        })
+      },
+      { threshold: [0, 0.2, 0.5] }
+    )
+
+    observer.observe(container)
+    return () => observer.disconnect()
+  }, [prefersReducedMotion, isPlaying])
+
+  const togglePlay = () => {
+    const video = videoRef.current
+    if (!video) return
+    if (video.paused) {
+      video.play().catch(() => {})
+      setIsPlaying(true)
+    } else {
+      video.pause()
+      setIsPlaying(false)
+    }
+  }
+
+  const toggleMute = (e: React.MouseEvent) => {
+    e.stopPropagation()
+    const video = videoRef.current
+    if (!video) return
+    video.muted = !isMuted
+    setIsMuted(!isMuted)
+  }
+
+  return (
+    <motion.div
+      ref={containerRef}
+      initial={{ opacity: 0, y: 32 }}
+      animate={inView ? { opacity: 1, y: 0 } : {}}
+      transition={{ delay: index * 0.14, duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
+      className="group relative flex flex-col justify-between overflow-hidden rounded-[2px] w-full"
+      style={{
+        background: 'var(--color-card)',
+        border: '1px solid rgba(180,138,69,0.20)',
+        transition: 'border-color 0.35s ease, transform 0.35s ease, box-shadow 0.35s ease',
+      }}
+      onMouseEnter={e => {
+        e.currentTarget.style.borderColor = 'rgba(180,138,69,0.45)'
+        e.currentTarget.style.transform = 'translateY(-4px)'
+        e.currentTarget.style.boxShadow = '0 12px 32px rgba(0,0,0,0.45), 0 0 25px rgba(180,138,69,0.12)'
+      }}
+      onMouseLeave={e => {
+        e.currentTarget.style.borderColor = 'rgba(180,138,69,0.20)'
+        e.currentTarget.style.transform = 'none'
+        e.currentTarget.style.boxShadow = 'none'
+      }}
+    >
+      {/* ── Portrait Video Frame (Strict 9:16 aspect ratio) ── */}
+      <div
+        className="relative w-full overflow-hidden bg-[#14120E] cursor-pointer"
+        style={{
+          aspectRatio: '9 / 16',
+          maxHeight: '540px',
+        }}
+        onClick={togglePlay}
+        role="region"
+        aria-label={`${item.title} video player`}
+      >
+        {/* High-Res Static Poster Fallback / Loading State */}
+        <img
+          src={item.posterSrc}
+          alt={item.title}
+          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 pointer-events-none ${
+            isLoaded && !hasError && !prefersReducedMotion ? 'opacity-0' : 'opacity-100'
+          }`}
+          style={{ objectPosition: item.objectPosition }}
+          loading="lazy"
+        />
+
+        {/* Video Element */}
+        {!prefersReducedMotion && (
+          <video
+            ref={videoRef}
+            src={item.videoSrc}
+            poster={item.posterSrc}
+            autoPlay
+            loop
+            muted={isMuted}
+            playsInline
+            preload="metadata"
+            onLoadedData={() => setIsLoaded(true)}
+            onError={() => setHasError(true)}
+            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.02]"
+            style={{ objectPosition: item.objectPosition }}
+            aria-label={item.title}
+          />
+        )}
+
+        {/* Cinematic Vignette Overlay */}
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            background:
+              'linear-gradient(to top, rgba(30,28,24,0.95) 0%, rgba(30,28,24,0.15) 35%, transparent 65%, rgba(23,23,19,0.4) 100%)',
+          }}
+        />
+
+        {/* Top Floating Badge */}
+        <div className="absolute top-3.5 left-3.5 z-10">
+          <span
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '0.45rem',
+              padding: '0.35rem 0.75rem',
+              background: 'rgba(23,23,19,0.85)',
+              backdropFilter: 'blur(8px)',
+              WebkitBackdropFilter: 'blur(8px)',
+              border: '1px solid rgba(180,138,69,0.32)',
+              borderRadius: '2px',
+              fontFamily: 'Manrope, sans-serif',
+              fontSize: '0.65rem',
+              fontWeight: 700,
+              letterSpacing: '0.12em',
+              textTransform: 'uppercase',
+              color: '#B48A45',
+            }}
+          >
+            <item.Icon className="w-3 h-3 text-[#B48A45]" />
+            {item.badge}
+          </span>
+        </div>
+
+        {/* Top-Right Audio & Playback Controls */}
+        <div className="absolute top-3.5 right-3.5 z-10 flex items-center gap-1.5">
+          {/* Mute/Unmute Toggle */}
+          <button
+            type="button"
+            onClick={toggleMute}
+            className="w-8 h-8 rounded-full flex items-center justify-center transition-all cursor-pointer"
+            style={{
+              background: 'rgba(23,23,19,0.80)',
+              backdropFilter: 'blur(8px)',
+              WebkitBackdropFilter: 'blur(8px)',
+              border: '1px solid rgba(200,189,170,0.22)',
+              color: isMuted ? 'rgba(200,189,170,0.7)' : '#B48A45',
+            }}
+            aria-label={isMuted ? `Unmute ${item.title}` : `Mute ${item.title}`}
+            title={isMuted ? 'Click to unmute sound' : 'Click to mute sound'}
+          >
+            {isMuted ? <VolumeX className="w-3.5 h-3.5" /> : <Volume2 className="w-3.5 h-3.5" />}
+          </button>
+
+          {/* Play/Pause Toggle */}
+          <button
+            type="button"
+            onClick={e => {
+              e.stopPropagation()
+              togglePlay()
+            }}
+            className="w-8 h-8 rounded-full flex items-center justify-center transition-all cursor-pointer"
+            style={{
+              background: 'rgba(23,23,19,0.80)',
+              backdropFilter: 'blur(8px)',
+              WebkitBackdropFilter: 'blur(8px)',
+              border: '1px solid rgba(200,189,170,0.22)',
+              color: '#F4EFE5',
+            }}
+            aria-label={isPlaying ? `Pause ${item.title}` : `Play ${item.title}`}
+            title={isPlaying ? 'Pause video' : 'Play video'}
+          >
+            {isPlaying ? <Pause className="w-3.5 h-3.5" /> : <Play className="w-3.5 h-3.5 ml-0.5" />}
+          </button>
+        </div>
+      </div>
+
+      {/* ── Card Content Directly Below Video ── */}
+      <div className="p-6 sm:p-7 flex-1 flex flex-col justify-between">
+        <div>
+          <span
+            style={{
+              display: 'block',
+              fontFamily: 'Manrope, sans-serif',
+              fontSize: '0.68rem',
+              fontWeight: 700,
+              letterSpacing: '0.18em',
+              textTransform: 'uppercase',
+              color: '#B48A45',
+              marginBottom: '0.45rem',
+            }}
+          >
+            {item.tag}
+          </span>
+          <h3
+            style={{
+              fontFamily: '"Cormorant Garamond", Georgia, serif',
+              fontSize: '1.65rem',
+              fontWeight: 600,
+              color: '#F4EFE5',
+              lineHeight: 1.2,
+              marginBottom: '0.65rem',
+            }}
+          >
+            {item.title}
+          </h3>
+          <p
+            style={{
+              fontFamily: 'Manrope, sans-serif',
+              fontSize: '0.88rem',
+              lineHeight: 1.65,
+              color: 'rgba(200,189,170,0.78)',
+              fontWeight: 400,
+            }}
+          >
+            {item.desc}
+          </p>
+        </div>
+
+        <div
+          className="mt-6 pt-4 flex items-center justify-between"
+          style={{ borderTop: '1px solid rgba(200,189,170,0.08)' }}
+        >
+          <span
+            style={{
+              fontFamily: 'Manrope, sans-serif',
+              fontSize: '0.68rem',
+              fontWeight: 600,
+              letterSpacing: '0.12em',
+              textTransform: 'uppercase',
+              color: '#B48A45',
+            }}
+          >
+            Peepai Experience
+          </span>
+          <div
+            className="w-6 h-px transition-all duration-300 group-hover:w-12"
+            style={{ background: '#B48A45' }}
+          />
+        </div>
+      </div>
+    </motion.div>
+  )
+}
 
 export function Vibe() {
   const ref = useRef<HTMLElement>(null)
@@ -51,12 +353,12 @@ export function Vibe() {
           initial={{ opacity: 0, y: 28 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.7 }}
-          className="text-center mb-16"
+          className="text-center mb-12 sm:mb-16"
         >
           <div className="inline-flex items-center gap-2 mb-2">
             <span className="w-6 h-[1px] bg-[#B48A45]" />
             <p className="section-label" style={{ margin: 0 }}>
-              The Ambience &amp; Architecture
+              THE PEEPAI EXPERIENCE
             </p>
             <span className="w-6 h-[1px] bg-[#B48A45]" />
           </div>
@@ -72,7 +374,7 @@ export function Vibe() {
               marginBottom: '1rem',
             }}
           >
-            Curated Spaces for <span style={{ color: '#B48A45', fontStyle: 'italic' }}>Every Occasion</span>
+            Where Beer, Food &amp; <span style={{ color: '#B48A45', fontStyle: 'italic' }}>Fun Meet</span>
           </h2>
           <p
             style={{
@@ -84,134 +386,19 @@ export function Vibe() {
               lineHeight: 1.6,
             }}
           >
-            From quiet sunset cocktails on the sky terrace to energetic weekend acoustic sets,
-            explore the distinctive spaces that define Peepai Brewery &amp; Kitchen.
+            Discover the craft, flavours, and atmosphere that make every visit to Peepai memorable.
           </p>
         </motion.div>
 
-        {/* 4 Experience Cards with Photography */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-16">
-          {EXPERIENCES.map((exp, i) => (
-            <motion.div
-              key={exp.title}
-              initial={{ opacity: 0, y: 32 }}
-              animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ delay: i * 0.12, duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
-              className="group relative flex flex-col justify-between overflow-hidden rounded-[2px]"
-              style={{
-                background: 'var(--color-card)',
-                border: '1px solid rgba(200,189,170,0.08)',
-                transition: 'border-color 0.3s ease, transform 0.3s ease',
-              }}
-              onMouseEnter={e => {
-                e.currentTarget.style.borderColor = 'rgba(180,138,69,0.28)'
-                e.currentTarget.style.transform = 'translateY(-3px)'
-              }}
-              onMouseLeave={e => {
-                e.currentTarget.style.borderColor = 'rgba(200,189,170,0.08)'
-                e.currentTarget.style.transform = 'none'
-              }}
-            >
-              {/* Image Header with Neat Focal Framing */}
-              <div className="relative h-48 overflow-hidden bg-[#181612]">
-                <img
-                  src={exp.photo}
-                  alt={exp.title}
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-108"
-                  style={{
-                    objectPosition:
-                      exp.photo.includes('elephant')
-                        ? 'center 20%'
-                        : exp.photo.includes('double-deck')
-                        ? 'center 35%'
-                        : exp.photo.includes('terrace')
-                        ? 'center 40%'
-                        : 'center 35%',
-                  }}
-                  loading="lazy"
-                />
-                <div
-                  className="absolute inset-0"
-                  style={{
-                    background: 'linear-gradient(to top, #1E1C18 0%, rgba(30,28,24,0.3) 60%, transparent 100%)',
-                  }}
-                />
-                <div className="absolute top-3 left-3">
-                  <span
-                    style={{
-                      display: 'inline-flex',
-                      alignItems: 'center',
-                      gap: '0.4rem',
-                      padding: '0.3rem 0.65rem',
-                      background: 'rgba(23,23,19,0.85)',
-                      backdropFilter: 'blur(8px)',
-                      border: '1px solid rgba(180,138,69,0.25)',
-                      borderRadius: '2px',
-                      fontFamily: 'Manrope, sans-serif',
-                      fontSize: '0.62rem',
-                      fontWeight: 700,
-                      letterSpacing: '0.12em',
-                      textTransform: 'uppercase',
-                      color: '#B48A45',
-                    }}
-                  >
-                    <exp.Icon className="w-3 h-3" />
-                    {exp.highlight}
-                  </span>
-                </div>
-              </div>
-
-              {/* Card Body */}
-              <div className="p-6 flex-1 flex flex-col justify-between">
-                <div>
-                  <h3
-                    style={{
-                      fontFamily: '"Cormorant Garamond", Georgia, serif',
-                      fontSize: '1.35rem',
-                      fontWeight: 600,
-                      color: '#F4EFE5',
-                      lineHeight: 1.25,
-                      marginBottom: '0.6rem',
-                    }}
-                  >
-                    {exp.title}
-                  </h3>
-                  <p
-                    style={{
-                      fontFamily: 'Manrope, sans-serif',
-                      fontSize: '0.8rem',
-                      lineHeight: 1.6,
-                      color: 'rgba(200,189,170,0.70)',
-                      fontWeight: 400,
-                    }}
-                  >
-                    {exp.desc}
-                  </p>
-                </div>
-
-                <div
-                  className="mt-6 pt-4 flex items-center justify-between"
-                  style={{ borderTop: '1px solid rgba(200,189,170,0.08)' }}
-                >
-                  <span
-                    style={{
-                      fontFamily: 'Manrope, sans-serif',
-                      fontSize: '0.65rem',
-                      fontWeight: 600,
-                      letterSpacing: '0.1em',
-                      textTransform: 'uppercase',
-                      color: '#B48A45',
-                    }}
-                  >
-                    Explore
-                  </span>
-                  <div
-                    className="w-5 h-px transition-all duration-300 group-hover:w-10"
-                    style={{ background: '#B48A45' }}
-                  />
-                </div>
-              </div>
-            </motion.div>
+        {/* ── 3-Card Portrait Video Experience (Our Brewery, Our Kitchen, Our Environment) ── */}
+        <div className="grid grid-cols-1 min-[901px]:grid-cols-3 gap-8 sm:gap-10 lg:gap-7 max-w-md min-[901px]:max-w-none mx-auto mb-16 sm:mb-20">
+          {VIDEO_EXPERIENCES.map((item, i) => (
+            <VideoExperienceCard
+              key={item.id}
+              item={item}
+              index={i}
+              inView={inView}
+            />
           ))}
         </div>
 

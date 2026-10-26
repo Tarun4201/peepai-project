@@ -160,7 +160,7 @@ export function Navbar({ config }: NavbarProps) {
           {/* Hamburger */}
           <button
             onClick={() => setMenuOpen(m => !m)}
-            className="lg:hidden w-10 h-10 flex flex-col justify-center gap-1.5 p-2 rounded-sm"
+            className="lg:hidden w-11 h-11 flex flex-col justify-center items-center gap-1.5 p-2.5 rounded-sm cursor-pointer"
             aria-label={menuOpen ? 'Close menu' : 'Open menu'}
             aria-expanded={menuOpen}
           >
@@ -169,11 +169,11 @@ export function Navbar({ config }: NavbarProps) {
                 key={i}
                 animate={{
                   rotate:  menuOpen ? (i === 0 ? 45 : i === 2 ? -45 : 0) : 0,
-                  y:       menuOpen ? (i === 0 ? 8  : i === 2 ? -8 : 0)  : 0,
+                  y:       menuOpen ? (i === 0 ? 7  : i === 2 ? -7 : 0)  : 0,
                   opacity: menuOpen && i === 1 ? 0 : 1,
                 }}
                 transition={{ duration: 0.25 }}
-                className="block w-5 h-px rounded-full"
+                className="block w-5 h-[2px] rounded-full"
                 style={{ background: 'var(--color-accent)' }}
               />
             ))}
@@ -189,24 +189,23 @@ export function Navbar({ config }: NavbarProps) {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -16 }}
             transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-            className="fixed top-0 inset-x-0 z-40 glass-strong pt-24 pb-8 px-6 lg:hidden"
+            className="fixed top-0 inset-x-0 z-40 glass-strong pt-24 pb-8 px-6 lg:hidden max-h-[100dvh] overflow-y-auto overscroll-contain"
           >
-            <nav className="flex flex-col gap-5" aria-label="Mobile navigation">
+            <nav className="flex flex-col gap-3" aria-label="Mobile navigation">
               {NAV_LINKS.map(l => (
                 <button
                   key={l.href}
                   onClick={() => go(l.href)}
-                  className="text-left"
+                  className="text-left py-2 min-h-[44px] flex items-center cursor-pointer"
                   style={{
                     fontFamily: '"Cormorant Garamond", Georgia, serif',
-                    fontSize: '1.75rem',
+                    fontSize: '1.65rem',
                     fontWeight: 500,
                     color: active === l.href ? '#B48A45' : '#F4EFE5',
                     letterSpacing: '-0.01em',
                     transition: 'color 0.2s ease',
                     background: 'none',
                     border: 'none',
-                    cursor: 'pointer',
                   }}
                 >
                   {l.label}
@@ -214,17 +213,20 @@ export function Navbar({ config }: NavbarProps) {
               ))}
             </nav>
             <div
-              className="mt-8 pt-6 flex flex-col gap-3"
+              className="mt-6 pt-6 flex flex-col gap-3"
               style={{ borderTop: '1px solid rgba(200,189,170,0.10)' }}
             >
               <a
                 href={`tel:${config.phone}`}
-                className="btn-outline justify-center w-full"
+                className="btn-outline justify-center w-full min-h-[44px]"
               >
-                <Phone className="w-3.5 h-3.5" />
+                <Phone className="w-4 h-4" />
                 {config.phone}
               </a>
-              <button onClick={() => go('#reserve')} className="btn-primary justify-center w-full">
+              <button
+                onClick={() => go('#reserve')}
+                className="btn-primary justify-center w-full min-h-[44px]"
+              >
                 Reserve a Table
               </button>
             </div>
