@@ -27,8 +27,8 @@ export function Welcome({ config }: Props) {
       style={{ background: 'var(--color-bg-warm)' }}
     >
       <div className="container-xl">
-        {/* ── Top: Label + Photo collage row ── */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center mb-16 lg:mb-24">
+        {/* ── Label + Photo story row ── */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
 
           {/* Left: full-bleed photo with editorial frame */}
           <div className="reveal-left" style={{ transitionDelay: '0.05s' }}>
@@ -151,70 +151,6 @@ export function Welcome({ config }: Props) {
               </span>
             </div>
           </div>
-        </div>
-
-        {/* ── Bottom: panoramic photo strip of real ambience (4K & neatly cropped) ── */}
-        <div className="divider mb-12" />
-        <div className="reveal grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
-          {[
-            { src: 'ambience6.jpg', label: 'Two-Tier Decks', pos: 'center 40%' },
-            { src: 'ambience1.jpg', label: 'Bacardi Bar Counter', pos: 'center 35%' },
-            { src: 'ambience4.jpg', label: 'Acoustic Stage & Wall', pos: 'center center' },
-            { src: 'ambience7.jpg', label: 'Garden Courtyard', pos: 'center 45%' },
-          ].map(photo => (
-            <div
-              key={photo.src}
-              className="relative h-44 sm:h-60 lg:h-72 overflow-hidden rounded-[2px] group border border-[rgba(200,189,170,0.12)] bg-[#1e1c18]"
-            >
-              <img
-                src={`/photos/${photo.src}`}
-                alt={photo.label}
-                style={{
-                  width: '100%',
-                  height: '100%',
-                  objectFit: 'cover',
-                  objectPosition: photo.pos,
-                  transition: 'transform 0.8s cubic-bezier(0.16,1,0.3,1)',
-                }}
-                loading="lazy"
-                onMouseEnter={e => (e.currentTarget.style.transform = 'scale(1.06)')}
-                onMouseLeave={e => (e.currentTarget.style.transform = 'scale(1)')}
-              />
-              <div
-                style={{
-                  position: 'absolute',
-                  inset: 0,
-                  background:
-                    'linear-gradient(to top, rgba(23,23,19,0.85) 0%, transparent 60%)',
-                  pointerEvents: 'none',
-                }}
-              />
-              <div
-                style={{
-                  position: 'absolute',
-                  bottom: '0.85rem',
-                  left: '0.85rem',
-                  padding: '0.3rem 0.65rem',
-                  background: 'rgba(23,23,19,0.85)',
-                  border: '1px solid rgba(180,138,69,0.3)',
-                  borderRadius: '2px',
-                }}
-              >
-                <span
-                  style={{
-                    fontFamily: 'Manrope, sans-serif',
-                    fontSize: '0.58rem',
-                    letterSpacing: '0.15em',
-                    textTransform: 'uppercase',
-                    color: '#B48A45',
-                    fontWeight: 700,
-                  }}
-                >
-                  {photo.label}
-                </span>
-              </div>
-            </div>
-          ))}
         </div>
       </div>
     </section>
