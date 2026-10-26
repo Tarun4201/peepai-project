@@ -1,6 +1,7 @@
 import { useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
-import { Music, Beer, Trees, Sparkles, Star } from 'lucide-react'
+import { Music, Beer, Trees, Sparkles } from 'lucide-react'
+import { StarRating } from '../ui/StarRating'
 
 const EXPERIENCES = [
   {
@@ -424,11 +425,7 @@ export function Vibe() {
           </blockquote>
 
           <div className="flex items-center justify-center gap-3 relative z-10 flex-wrap">
-            <div className="flex" style={{ color: '#B48A45', gap: '3px' }}>
-              {[1, 2, 3, 4, 5].map(i => (
-                <Star key={i} className="w-4 h-4 fill-[#B48A45] text-[#B48A45]" />
-              ))}
-            </div>
+            <StarRating rating={4.5} size={16} idPrefix="vibe-stars" />
             <span
               style={{
                 fontFamily: 'Manrope, sans-serif',

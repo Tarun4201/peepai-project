@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react'
 import type { RestaurantConfig } from '../../config/restaurant'
+import { StarRating } from '../ui/StarRating'
 
 interface Props { config: RestaurantConfig }
 
@@ -136,13 +137,7 @@ export function Welcome({ config }: Props) {
                 borderTop: '1px solid rgba(200,189,170,0.10)',
               }}
             >
-              <div style={{ display: 'flex', gap: '2px' }}>
-                {Array.from({ length: 5 }).map((_, i) => (
-                  <svg key={i} viewBox="0 0 12 12" width="14" height="14" fill={i < Math.floor(config.rating) ? '#B48A45' : 'none'} stroke="#B48A45" strokeWidth="1">
-                    <polygon points="6,1 7.5,4.5 11.5,5 8.5,7.5 9.5,11.5 6,9.5 2.5,11.5 3.5,7.5 0.5,5 4.5,4.5" />
-                  </svg>
-                ))}
-              </div>
+              <StarRating rating={config.rating} size={16} idPrefix="welcome-stars" />
               <span style={{ fontFamily: '"Bricolage Grotesque", Manrope, sans-serif', fontWeight: 700, color: '#B48A45', fontSize: '1.1rem' }}>
                 {config.rating}
               </span>
