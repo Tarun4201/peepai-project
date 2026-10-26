@@ -12,6 +12,7 @@ import {
   Sparkles,
 } from 'lucide-react'
 import type { RestaurantConfig } from '../../config/restaurant'
+import { ZomatoIcon, SwiggyIcon } from '../ui/BrandIcons'
 
 interface ReserveProps {
   config: RestaurantConfig
@@ -235,7 +236,7 @@ export function Reserve({ config }: ReserveProps) {
                         e.currentTarget.style.borderColor = 'rgba(226,55,68,0.35)'
                       }}
                     >
-                      <span className="w-2 h-2 rounded-full bg-[#E23744]" />
+                      <ZomatoIcon className="w-4 h-4 text-[#E23744] flex-shrink-0" />
                       <span>Order on Zomato</span>
                     </a>
                   )}
@@ -259,7 +260,7 @@ export function Reserve({ config }: ReserveProps) {
                         e.currentTarget.style.borderColor = 'rgba(252,128,25,0.35)'
                       }}
                     >
-                      <span className="w-2 h-2 rounded-full bg-[#FC8019]" />
+                      <SwiggyIcon className="w-4 h-4 text-[#FC8019] flex-shrink-0" />
                       <span>Order on Swiggy</span>
                     </a>
                   )}

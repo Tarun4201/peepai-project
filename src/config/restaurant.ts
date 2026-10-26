@@ -116,9 +116,9 @@ const config: RestaurantConfig = {
   phone: '+91 96327 06699',
   whatsapp: '919632706699',
   address: '102/1 & 102/2, Ground Floor, GM Arcade, Service Road, Bellary Road, Hebbal, Bengaluru – 560092',
-  mapsLink: 'https://maps.google.com/?q=Peepai+Brewery+Kitchen+Hebbal+Bengaluru',
+  mapsLink: 'https://www.google.com/maps/place/Peepai+Brewery+%26+Kitchen/@13.055678,77.590556,17z/data=!3m1!4b1!4m6!3m5!1s0x3bae17715488b8f1:0x1e6fda6b4447de80!8m2!3d13.055678!4d77.593131',
   mapsEmbedSrc:
-    'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3887.3627634!2d77.58843!3d13.0492!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bae17d1b13b3b5d%3A0xf8b1bbf2e0f8c6a1!2sPeepai%20Brewery%20%26%20Kitchen!5e0!3m2!1sen!2sin!4v1697000000000',
+    'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3886.685338!2d77.590556!3d13.055678!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bae17715488b8f1%3A0x1e6fda6b4447de80!2sPeepai%20Brewery%20%26%20Kitchen!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin',
 
   // ─── Hours ──────────────────────────────────────────────
   hours: [

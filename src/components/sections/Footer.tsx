@@ -1,5 +1,6 @@
 import { Phone, Send, Clock, MapPin } from 'lucide-react'
 import type { RestaurantConfig } from '../../config/restaurant'
+import { ZomatoIcon, SwiggyIcon } from '../ui/BrandIcons'
 
 interface FooterProps {
   config: RestaurantConfig
@@ -382,7 +383,7 @@ export function Footer({ config }: FooterProps) {
                         e.currentTarget.style.borderColor = 'rgba(226,55,68,0.35)'
                       }}
                     >
-                      <span className="w-2 h-2 rounded-full bg-[#E23744]" />
+                      <ZomatoIcon className="w-3.5 h-3.5 text-[#E23744] flex-shrink-0" />
                       <span
                         style={{
                           fontFamily: 'Manrope, sans-serif',
@@ -416,7 +417,7 @@ export function Footer({ config }: FooterProps) {
                         e.currentTarget.style.borderColor = 'rgba(252,128,25,0.35)'
                       }}
                     >
-                      <span className="w-2 h-2 rounded-full bg-[#FC8019]" />
+                      <SwiggyIcon className="w-3.5 h-3.5 text-[#FC8019] flex-shrink-0" />
                       <span
                         style={{
                           fontFamily: 'Manrope, sans-serif',

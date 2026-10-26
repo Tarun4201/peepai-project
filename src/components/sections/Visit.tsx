@@ -310,6 +310,32 @@ export function Visit({ config }: VisitProps) {
                 background: 'var(--color-card)',
               }}
             >
+              {/* Floating Pin Indicator */}
+              <div
+                className="absolute top-3 right-3 z-10 flex items-center gap-2 px-3 py-1.5 rounded-[2px] shadow-lg pointer-events-none"
+                style={{
+                  background: 'rgba(23, 23, 19, 0.92)',
+                  backdropFilter: 'blur(8px)',
+                  border: '1px solid rgba(180, 138, 69, 0.4)',
+                }}
+              >
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-red-600"></span>
+                </span>
+                <span
+                  style={{
+                    fontFamily: 'Manrope, sans-serif',
+                    fontSize: '0.7rem',
+                    fontWeight: 700,
+                    color: '#F4EFE5',
+                    letterSpacing: '0.02em',
+                  }}
+                >
+                  📍 Verified Pin Location
+                </span>
+              </div>
+
               {/* Map embed iframe */}
               <iframe
                 title="Peepai Brewery & Kitchen Location Map"
@@ -320,7 +346,6 @@ export function Visit({ config }: VisitProps) {
                   border: 0,
                   minHeight: '380px',
                   flex: 1,
-                  filter: 'invert(90%) hue-rotate(180deg) contrast(110%)',
                 }}
                 allowFullScreen={false}
                 loading="lazy"
