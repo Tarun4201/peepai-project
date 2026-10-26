@@ -621,7 +621,9 @@ export function CorporateEvents({ config }: CorporateEventsProps) {
                     <span className="block text-[0.62rem] uppercase tracking-wider text-[#25D366] font-bold">
                       WhatsApp Concierge
                     </span>
-                    <span className="text-sm font-bold text-[#F4EFE5]">Direct Chat with Event Lead</span>
+                    <span className="text-sm font-bold text-[#F4EFE5]">
+                      {config.whatsappFormatted || `+${config.whatsapp}`}
+                    </span>
                   </div>
                 </div>
                 <span className="text-xs text-[#25D366] group-hover:underline">Chat Now →</span>
@@ -641,7 +643,7 @@ export function CorporateEvents({ config }: CorporateEventsProps) {
                   </div>
                   <div>
                     <span className="block text-[0.62rem] uppercase tracking-wider text-[#B48A45] font-bold">
-                      Corporate Hotline
+                      Corporate Hotline (Voice Call Only)
                     </span>
                     <span className="text-sm font-bold text-[#F4EFE5]">{config.phone}</span>
                   </div>

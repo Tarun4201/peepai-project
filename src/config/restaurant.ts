@@ -46,8 +46,9 @@ export type RestaurantConfig = {
   logo?: string;
 
   // Contact
-  phone: string;
-  whatsapp: string; // digits only, with country code
+  phone: string; // voice calls only
+  whatsapp: string; // digits only, with country code (e.g. 918746890706)
+  whatsappFormatted?: string; // formatted for display
   address: string;
   mapsLink: string;
   mapsEmbedSrc: string;
@@ -113,8 +114,9 @@ const config: RestaurantConfig = {
   reviewCount: '5,600+',
 
   // ─── Contact ────────────────────────────────────────────
-  phone: '+91 96327 06699',
-  whatsapp: '919632706699',
+  phone: '+91 96327 06699', // Voice Calls Only
+  whatsapp: '918746890706', // WhatsApp Messaging Only
+  whatsappFormatted: '+91 87468 90706',
   address: '102/1 & 102/2, Ground Floor, GM Arcade, Service Road, Bellary Road, Hebbal, Bengaluru – 560092',
   mapsLink: 'https://www.google.com/maps/place/Peepai+Brewery+%26+Kitchen/@13.055678,77.590556,17z/data=!3m1!4b1!4m6!3m5!1s0x3bae17715488b8f1:0x1e6fda6b4447de80!8m2!3d13.055678!4d77.593131',
   mapsEmbedSrc:

@@ -235,23 +235,49 @@ export function Visit({ config }: VisitProps) {
                       fontFamily: 'Manrope, sans-serif',
                       fontSize: '0.8rem',
                       color: 'rgba(200,189,170,0.7)',
-                      marginBottom: '0.5rem',
+                      marginBottom: '0.75rem',
                     }}
                   >
-                    Call for instant table bookings, private event enquiries, or venue walk-throughs.
+                    Direct lines for instant bookings, private event enquiries, or table requests.
                   </p>
-                  <a
-                    href={`tel:${config.phone}`}
-                    style={{
-                      fontFamily: '"Bricolage Grotesque", Manrope, sans-serif',
-                      fontSize: '1.15rem',
-                      fontWeight: 700,
-                      color: '#B48A45',
-                    }}
-                    className="hover:underline inline-block"
-                  >
-                    {config.phone}
-                  </a>
+                  <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
+                    <div>
+                      <span className="block text-[0.62rem] uppercase tracking-wider font-bold text-[#B48A45] mb-0.5">
+                        Voice Call Only
+                      </span>
+                      <a
+                        href={`tel:${config.phone}`}
+                        style={{
+                          fontFamily: '"Bricolage Grotesque", Manrope, sans-serif',
+                          fontSize: '1.15rem',
+                          fontWeight: 700,
+                          color: '#B48A45',
+                        }}
+                        className="hover:underline inline-block"
+                      >
+                        {config.phone}
+                      </a>
+                    </div>
+                    <div>
+                      <span className="block text-[0.62rem] uppercase tracking-wider font-bold text-[#25D366] mb-0.5">
+                        WhatsApp Messaging Only
+                      </span>
+                      <a
+                        href={`https://wa.me/${config.whatsapp}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{
+                          fontFamily: '"Bricolage Grotesque", Manrope, sans-serif',
+                          fontSize: '1.15rem',
+                          fontWeight: 700,
+                          color: '#25D366',
+                        }}
+                        className="hover:underline inline-block"
+                      >
+                        {config.whatsappFormatted || `+${config.whatsapp}`}
+                      </a>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>

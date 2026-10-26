@@ -161,7 +161,7 @@ export function Reserve({ config }: ReserveProps) {
                     fontWeight: 700,
                   }}
                 >
-                  Direct Telephone Booking
+                  Direct Telephone Booking (Calls Only)
                 </span>
                 <span
                   style={{

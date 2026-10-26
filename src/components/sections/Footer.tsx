@@ -335,7 +335,19 @@ export function Footer({ config }: FooterProps) {
                   style={{ fontFamily: 'Manrope, sans-serif', color: '#F4EFE5', fontWeight: 600 }}
                   className="hover:underline"
                 >
-                  {config.phone}
+                  {config.phone} <span className="text-[0.68rem] text-[rgba(200,189,170,0.6)] font-normal">(Voice Calls)</span>
+                </a>
+              </div>
+              <div className="flex items-center gap-2.5">
+                <Send className="w-4 h-4 flex-shrink-0" style={{ color: '#25D366' }} />
+                <a
+                  href={`https://wa.me/${config.whatsapp}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ fontFamily: 'Manrope, sans-serif', color: '#25D366', fontWeight: 600 }}
+                  className="hover:underline"
+                >
+                  {config.whatsappFormatted || `+${config.whatsapp}`} <span className="text-[0.68rem] text-[rgba(200,189,170,0.6)] font-normal">(WhatsApp Messaging)</span>
                 </a>
               </div>
               <div className="flex items-center gap-2.5">
