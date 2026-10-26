@@ -147,6 +147,7 @@ const config: RestaurantConfig = {
     'ambience5.jpg',
     'ambience6.jpg',
     'ambience7.jpg',
+    'corporate.jpg',
   ],
 
   galleryItems: [
@@ -157,38 +158,44 @@ const config: RestaurantConfig = {
       category: 'Sky Terrace',
     },
     {
-      src: 'ambience1.jpg',
-      title: 'The Bacardi Bar Counter & Emerald Marble Lounge',
-      caption: 'Green marble slab counter, illuminated spirit shelves, and warm velvet armchairs for craft cocktail evenings.',
-      category: 'Bar & Spirits',
-    },
-    {
       src: 'ambience6.jpg',
       title: 'Two-Tier Brewery Deck & Mezzanine Balcony',
       caption: 'Double-deck industrial architecture featuring ground-floor dining hall with yellow lounge and upper mezzanine balcony with brass railings.',
-      category: 'Brewery Architecture',
+      category: 'Brewery & Bar',
+    },
+    {
+      src: 'ambience1.jpg',
+      title: 'The Bacardi Amber Canopy Bar & Emerald Lounge',
+      caption: 'Green marble slab counter, illuminated spirit shelves, and warm velvet armchairs for craft cocktail evenings.',
+      category: 'Brewery & Bar',
     },
     {
       src: 'ambience4.jpg',
       title: 'Courtyard Amphitheatre & Live Performance Stage',
       caption: 'Central acoustic stage with Peepai mountain LED graphic, lush living vertical wall, and the iconic Golden Elephant relief.',
-      category: 'Live Stage & Courtyard',
+      category: 'Courtyard & Stage',
     },
     {
       src: 'ambience7.jpg',
       title: 'Botanical Garden Courtyard & Cabana Pods',
       caption: 'Lush tropical planters, hanging fern baskets, emerald velvet seating, and private white birdcage cabanas under the mezzanine.',
-      category: 'Garden Courtyard',
+      category: 'Courtyard & Stage',
     },
     {
       src: 'ambience3.jpg',
       title: 'Pop-Art VIP Suite & Mirrored Lounge',
       caption: 'Reflective mirrored ceiling, botanical wingback armchairs, black marble table, and playful pop-art neon silhouettes for private celebrations.',
-      category: 'VIP Lounge',
+      category: 'VIP & Private Dining',
+    },
+    {
+      src: 'corporate.jpg',
+      title: 'Private Dining & Corporate Enclave',
+      caption: 'Bespoke corporate dining setup and intimate private celebration space with tailored seating and dedicated bar hospitality.',
+      category: 'VIP & Private Dining',
     },
     {
       src: 'ambience5.jpg',
-      title: 'Sky Terrace Daylight Lounge',
+      title: 'Sky Terrace Daylight Shell Lounge',
       caption: 'Scalloped teal and charcoal velvet shell armchairs with golden legs bathed in daylight under the geometric canopy.',
       category: 'Sky Terrace',
     },

@@ -1,6 +1,6 @@
 import { useRef, useState, useCallback, useEffect, useMemo } from 'react'
 import { motion, useInView, AnimatePresence } from 'framer-motion'
-import { ZoomIn, ChevronLeft, ChevronRight, X } from 'lucide-react'
+import { ZoomIn, ChevronLeft, ChevronRight, X, LayoutGrid, LayoutTemplate } from 'lucide-react'
 import type { RestaurantConfig, GalleryItem } from '../../config/restaurant'
 
 interface GalleryProps {
@@ -12,6 +12,7 @@ export function Gallery({ config }: GalleryProps) {
   const inView = useInView(ref, { once: true, margin: '-80px' })
   const [lightbox, setLightbox] = useState<number | null>(null)
   const [selectedCategory, setSelectedCategory] = useState<string>('all')
+  const [viewMode, setViewMode] = useState<'mosaic' | 'grid'>('mosaic')
 
   const allItems: GalleryItem[] = useMemo(() => {
     return (
@@ -78,6 +79,50 @@ export function Gallery({ config }: GalleryProps) {
 
   if (!allItems.length) return null
 
+  // Function to compute symmetrical column spans & heights based on position and viewMode
+  const getCardLayoutClasses = (index: number, total: number) => {
+    // If filtered by category (2 items each):
+    if (selectedCategory !== 'all') {
+      if (total <= 2) {
+        return 'col-span-12 md:col-span-6 h-[320px] sm:h-[380px]'
+      }
+      return 'col-span-12 sm:col-span-6 lg:col-span-3 h-[270px] sm:h-[300px]'
+    }
+
+    // In uniform grid view:
+    if (viewMode === 'grid') {
+      return 'col-span-12 sm:col-span-6 lg:col-span-3 h-[270px] sm:h-[300px]'
+    }
+
+    // In Symmetrical Mosaic view:
+    // Row 1: Items 0 & 1 -> 50% / 50% (span 6 each, height 380px)
+    // Row 2: Items 2, 3, 4, 5 -> 25% each (span 3 each, height 280px)
+    // Row 3: Items 6 & 7 -> 50% / 50% (span 6 each, height 380px)
+    if (index === 0 || index === 1) {
+      return 'col-span-12 md:col-span-6 lg:col-span-6 h-[320px] sm:h-[380px]'
+    }
+    if (index >= 2 && index <= 5) {
+      return 'col-span-12 sm:col-span-6 lg:col-span-3 h-[250px] sm:h-[280px]'
+    }
+    if (index === 6 || index === 7) {
+      return 'col-span-12 md:col-span-6 lg:col-span-6 h-[320px] sm:h-[380px]'
+    }
+    return 'col-span-12 sm:col-span-6 lg:col-span-3 h-[270px] sm:h-[300px]'
+  }
+
+  // Focal center for images to avoid awkward cropping
+  const getImageFocalPosition = (src: string) => {
+    if (src.includes('ambience1')) return 'center 38%'
+    if (src.includes('ambience6')) return 'center 35%'
+    if (src.includes('ambience2')) return 'center 40%'
+    if (src.includes('ambience4')) return 'center 35%'
+    if (src.includes('ambience3')) return 'center 45%'
+    if (src.includes('ambience7')) return 'center 45%'
+    if (src.includes('ambience5')) return 'center 40%'
+    if (src.includes('corporate')) return 'center 45%'
+    return 'center 35%'
+  }
+
   return (
     <section
       id="gallery"
@@ -129,121 +174,186 @@ export function Gallery({ config }: GalleryProps) {
           </p>
         </motion.div>
 
-        {/* ─── Category Filter Pills ─── */}
-        <div className="flex items-center justify-center flex-wrap gap-2 mb-12">
-          {categories.map(cat => {
-            const isActive = selectedCategory === cat
-            const count =
-              cat === 'all'
-                ? allItems.length
-                : allItems.filter(i => i.category === cat).length
-            return (
+        {/* ─── Category Filter Pills & Symmetrical View Mode Switcher ─── */}
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-10 pb-4 border-b border-[rgba(200,189,170,0.08)]">
+          {/* Category Filter Pills */}
+          <div className="flex items-center justify-center flex-wrap gap-2">
+            {categories.map(cat => {
+              const isActive = selectedCategory === cat
+              const count =
+                cat === 'all'
+                  ? allItems.length
+                  : allItems.filter(i => i.category === cat).length
+              return (
+                <button
+                  key={cat}
+                  onClick={() => {
+                    setSelectedCategory(cat)
+                    setLightbox(null)
+                  }}
+                  style={{
+                    fontFamily: 'Manrope, sans-serif',
+                    fontSize: '0.7rem',
+                    fontWeight: 700,
+                    letterSpacing: '0.1em',
+                    textTransform: 'uppercase',
+                    padding: '0.5rem 1rem',
+                    borderRadius: '2px',
+                    border: isActive
+                      ? '1px solid #B48A45'
+                      : '1px solid rgba(200,189,170,0.12)',
+                    background: isActive ? '#B48A45' : 'var(--color-card)',
+                    color: isActive ? '#171713' : 'rgba(244,239,229,0.75)',
+                    cursor: 'pointer',
+                    transition: 'all 0.25s ease',
+                  }}
+                  className="hover:border-[#B48A45]"
+                >
+                  {cat === 'all' ? `All Spaces (${count})` : `${cat} (${count})`}
+                </button>
+              )
+            })}
+          </div>
+
+          {/* Symmetrical Layout Switcher (Visible on desktop) */}
+          {selectedCategory === 'all' && (
+            <div className="hidden md:flex items-center gap-1.5 p-1 rounded-[2px] bg-[#1E1C18] border border-[rgba(200,189,170,0.12)]">
               <button
-                key={cat}
-                onClick={() => {
-                  setSelectedCategory(cat)
-                  setLightbox(null)
-                }}
-                style={{
-                  fontFamily: 'Manrope, sans-serif',
-                  fontSize: '0.7rem',
-                  fontWeight: 700,
-                  letterSpacing: '0.1em',
-                  textTransform: 'uppercase',
-                  padding: '0.55rem 1.15rem',
-                  borderRadius: '2px',
-                  border: isActive
-                    ? '1px solid #B48A45'
-                    : '1px solid rgba(200,189,170,0.12)',
-                  background: isActive ? '#B48A45' : 'var(--color-card)',
-                  color: isActive ? '#171713' : 'rgba(244,239,229,0.75)',
-                  cursor: 'pointer',
-                  transition: 'all 0.25s ease',
-                }}
-                className="hover:border-[#B48A45]"
+                type="button"
+                onClick={() => setViewMode('mosaic')}
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-[2px] text-xs font-semibold font-['Manrope'] transition-all cursor-pointer ${
+                  viewMode === 'mosaic'
+                    ? 'bg-[#B48A45] text-[#171713]'
+                    : 'text-[rgba(200,189,170,0.7)] hover:text-[#F4EFE5]'
+                }`}
+                title="Symmetrical Architectural Mosaic (2 + 4 + 2)"
               >
-                {cat === 'all' ? `All Spaces (${count})` : `${cat} (${count})`}
+                <LayoutTemplate className="w-3.5 h-3.5" />
+                <span>Bento Mosaic</span>
               </button>
-            )
-          })}
+              <button
+                type="button"
+                onClick={() => setViewMode('grid')}
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-[2px] text-xs font-semibold font-['Manrope'] transition-all cursor-pointer ${
+                  viewMode === 'grid'
+                    ? 'bg-[#B48A45] text-[#171713]'
+                    : 'text-[rgba(200,189,170,0.7)] hover:text-[#F4EFE5]'
+                }`}
+                title="Uniform Symmetrical Grid (4 × 2)"
+              >
+                <LayoutGrid className="w-3.5 h-3.5" />
+                <span>Uniform Grid</span>
+              </button>
+            </div>
+          )}
         </div>
 
-        {/* ─── Masonry Editorial Grid ─── */}
-        <div className="masonry-grid">
-          {filteredItems.map((item, i) => (
-            <motion.div
-              key={item.src}
-              initial={{ opacity: 0, y: 25 }}
-              animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ delay: i * 0.06, duration: 0.55 }}
-              className="masonry-item rounded-[2px]"
-            >
-              <button
-                onClick={() => setLightbox(i)}
-                className="w-full group relative overflow-hidden block focus:outline-none focus-visible:ring-2 focus-visible:ring-[#B48A45] text-left rounded-[2px]"
-                style={{
-                  background: 'var(--color-card)',
-                  border: '1px solid rgba(200,189,170,0.1)',
-                }}
-                aria-label={`View photo of ${item.title}`}
+        {/* ─── Symmetrical Architectural Grid ─── */}
+        <div className="grid grid-cols-12 gap-4 sm:gap-5 lg:gap-6">
+          {filteredItems.map((item, i) => {
+            const layoutClass = getCardLayoutClasses(i, filteredItems.length)
+            const focalPos = getImageFocalPosition(item.src)
+            return (
+              <motion.div
+                key={item.src}
+                layout
+                initial={{ opacity: 0, y: 25 }}
+                animate={inView ? { opacity: 1, y: 0 } : {}}
+                transition={{ delay: i * 0.05, duration: 0.55 }}
+                className={layoutClass}
               >
-                <img
-                  src={`/photos/${item.src}`}
-                  alt={item.title}
-                  className="w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-                  loading="lazy"
-                />
-
-                {/* Editorial Overlay on Hover */}
-                <div
-                  className="masonry-item-overlay"
+                <button
+                  type="button"
+                  onClick={() => setLightbox(i)}
+                  className="w-full h-full group relative overflow-hidden block focus:outline-none focus-visible:ring-2 focus-visible:ring-[#B48A45] text-left rounded-[2px] cursor-pointer"
                   style={{
-                    background:
-                      'linear-gradient(to top, rgba(23,23,19,0.92) 0%, rgba(23,23,19,0.4) 60%, transparent 100%)',
+                    background: 'var(--color-card)',
+                    border: '1px solid rgba(180,138,69,0.20)',
+                    transition: 'border-color 0.35s ease, box-shadow 0.35s ease, transform 0.35s ease',
                   }}
+                  onMouseEnter={e => {
+                    e.currentTarget.style.borderColor = 'rgba(180,138,69,0.55)'
+                    e.currentTarget.style.boxShadow =
+                      '0 14px 34px rgba(0,0,0,0.55), 0 0 25px rgba(180,138,69,0.15)'
+                    e.currentTarget.style.transform = 'translateY(-3px)'
+                  }}
+                  onMouseLeave={e => {
+                    e.currentTarget.style.borderColor = 'rgba(180,138,69,0.20)'
+                    e.currentTarget.style.boxShadow = 'none'
+                    e.currentTarget.style.transform = 'none'
+                  }}
+                  aria-label={`View photo of ${item.title}`}
                 >
-                  <div className="w-full">
-                    <div className="flex items-center justify-between mb-1.5">
-                      <span
-                        style={{
-                          fontFamily: 'Manrope, sans-serif',
-                          fontSize: '0.62rem',
-                          fontWeight: 700,
-                          letterSpacing: '0.15em',
-                          textTransform: 'uppercase',
-                          color: '#B48A45',
-                        }}
-                      >
-                        {item.category || 'Interior Space'}
-                      </span>
-                      <ZoomIn className="w-4 h-4" style={{ color: '#B48A45' }} />
-                    </div>
+                  <img
+                    src={`/photos/${item.src}`}
+                    alt={item.title}
+                    className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-106"
+                    style={{ objectPosition: focalPos }}
+                    loading="lazy"
+                  />
+
+                  {/* Gradient Vignette for Text Legibility */}
+                  <div
+                    className="absolute inset-0 pointer-events-none"
+                    style={{
+                      background:
+                        'linear-gradient(to top, rgba(23,23,19,0.95) 0%, rgba(23,23,19,0.4) 50%, transparent 80%)',
+                    }}
+                  />
+
+                  {/* Top-Right Floating Zoom Pill */}
+                  <div className="absolute top-3.5 right-3.5 z-10">
+                    <span
+                      className="w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300 opacity-75 group-hover:opacity-100 group-hover:scale-110"
+                      style={{
+                        background: 'rgba(23,23,19,0.85)',
+                        backdropFilter: 'blur(8px)',
+                        WebkitBackdropFilter: 'blur(8px)',
+                        border: '1px solid rgba(180,138,69,0.35)',
+                        color: '#B48A45',
+                      }}
+                      title="Enlarge image"
+                    >
+                      <ZoomIn className="w-3.5 h-3.5" />
+                    </span>
+                  </div>
+
+                  {/* Bottom Text Details */}
+                  <div className="absolute bottom-0 inset-x-0 p-4 sm:p-5 z-10">
+                    <span
+                      style={{
+                        display: 'block',
+                        fontFamily: 'Manrope, sans-serif',
+                        fontSize: '0.62rem',
+                        fontWeight: 700,
+                        letterSpacing: '0.16em',
+                        textTransform: 'uppercase',
+                        color: '#B48A45',
+                        marginBottom: '0.25rem',
+                      }}
+                    >
+                      {item.category || 'Interior Space'}
+                    </span>
                     <h3
                       style={{
                         fontFamily: '"Cormorant Garamond", Georgia, serif',
-                        fontSize: '1.25rem',
+                        fontSize: 'clamp(1.15rem, 1.8vw, 1.45rem)',
                         fontWeight: 600,
                         color: '#F4EFE5',
+                        lineHeight: 1.2,
                         marginBottom: '0.25rem',
                       }}
                     >
                       {item.title}
                     </h3>
-                    <p
-                      style={{
-                        fontFamily: 'Manrope, sans-serif',
-                        fontSize: '0.74rem',
-                        color: 'rgba(200,189,170,0.75)',
-                        lineHeight: 1.45,
-                      }}
-                    >
+                    <p className="line-clamp-2 text-xs text-[rgba(200,189,170,0.78)] font-['Manrope'] leading-relaxed transition-opacity duration-300 opacity-85 group-hover:opacity-100">
                       {item.caption}
                     </p>
                   </div>
-                </div>
-              </button>
-            </motion.div>
-          ))}
+                </button>
+              </motion.div>
+            )
+          })}
         </div>
       </div>
 
