@@ -33,12 +33,12 @@ export function Welcome({ config }: Props) {
           {/* Left: full-bleed photo with editorial frame */}
           <div className="reveal-left" style={{ transitionDelay: '0.05s' }}>
             <div
-              className="relative w-full aspect-[4/5] sm:aspect-[4/5] max-h-[560px] overflow-hidden rounded-[2px] shadow-2xl border border-[rgba(200,189,170,0.12)]"
+              className="relative w-full aspect-[4/5] sm:aspect-[4/5] max-h-[560px] overflow-hidden rounded-[2px] shadow-2xl border border-[rgba(200,189,170,0.12)] bg-[#1e1c18]"
             >
               <img
-                src="/photos/peepai-gilded-lounge.jpg"
-                alt="The Gilded Birdcage Lounge & Spirit Salon — Peepai Brewery & Kitchen architectural interior"
-                style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center 38%' }}
+                src="/photos/ambience2.jpg"
+                alt="The Open-Air Rooftop Sky Terrace — Peepai Brewery & Kitchen architectural interior"
+                style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center 45%' }}
                 loading="eager"
                 fetchPriority="high"
                 decoding="async"
@@ -50,7 +50,7 @@ export function Welcome({ config }: Props) {
                   bottom: '1.25rem',
                   left: '1.25rem',
                   padding: '0.45rem 0.9rem',
-                  background: 'rgba(23,23,19,0.80)',
+                  background: 'rgba(23,23,19,0.85)',
                   backdropFilter: 'blur(10px)',
                   border: '1px solid rgba(180,138,69,0.30)',
                   borderRadius: '2px',
@@ -66,7 +66,7 @@ export function Welcome({ config }: Props) {
                     fontWeight: 700,
                   }}
                 >
-                  Gilded Lounge &amp; Spirit Salon
+                  Rooftop Sky Terrace &amp; Amber Canopy
                 </span>
               </div>
             </div>
@@ -153,14 +153,14 @@ export function Welcome({ config }: Props) {
           </div>
         </div>
 
-        {/* ── Bottom: full-width panoramic photo strip (4K & neatly cropped) ── */}
+        {/* ── Bottom: panoramic photo strip of real ambience (4K & neatly cropped) ── */}
         <div className="divider mb-12" />
         <div className="reveal grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
           {[
-            { src: 'peepai-double-deck-brewery.jpg', label: 'Brewery Decks', pos: 'center 35%' },
-            { src: 'peepai-cocktail-bar-canopy.jpg', label: 'Amber Canopy Bar', pos: 'center 35%' },
-            { src: 'peepai-live-stage-courtyard.jpg', label: 'Acoustic Stage', pos: 'center center' },
-            { src: 'peepai-twilight-sky-terrace.jpg', label: 'Sky Terrace', pos: 'center 40%' },
+            { src: 'ambience6.jpg', label: 'Two-Tier Decks', pos: 'center 40%' },
+            { src: 'ambience1.jpg', label: 'Bacardi Bar Counter', pos: 'center 35%' },
+            { src: 'ambience4.jpg', label: 'Acoustic Stage & Wall', pos: 'center center' },
+            { src: 'ambience7.jpg', label: 'Garden Courtyard', pos: 'center 45%' },
           ].map(photo => (
             <div
               key={photo.src}

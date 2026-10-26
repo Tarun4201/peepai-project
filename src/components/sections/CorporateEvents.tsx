@@ -316,7 +316,7 @@ export function CorporateEvents({ config }: CorporateEventsProps) {
             {/* Visual Showcase (7 cols) */}
             <div className="lg:col-span-7 relative min-h-[380px] sm:min-h-[460px] overflow-hidden group">
               <img
-                src="/photos/peepai-corporate-gatherings.jpg"
+                src="/photos/corporate.jpg"
                 alt="Peepai Brewery & Kitchen bustling main dining hall, live stage, and corporate party gathering"
                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                 style={{ objectPosition: 'center 40%' }}

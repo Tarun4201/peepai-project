@@ -276,6 +276,8 @@ export function Footer({ config }: FooterProps) {
               {[
                 ['Heritage & Story', '#welcome'],
                 ['The Peepai Ambience', '#vibe'],
+                ['Corporate & Events', '#corporate'],
+                ['Culinary Showcase', '#culinary'],
                 ['Craft Beer & Food Menu', '#menu'],
                 ['Visual Journal', '#gallery'],
                 ['Table Reservations', '#reserve'],

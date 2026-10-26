@@ -9,6 +9,7 @@ const NAV_LINKS = [
   { href: '#welcome',    label: 'Our Story' },
   { href: '#vibe',       label: 'Ambience' },
   { href: '#corporate',  label: 'Corporate & Events' },
+  { href: '#culinary',   label: 'Culinary' },
   { href: '#menu',       label: 'Menu' },
   { href: '#gallery',    label: 'Gallery' },
   { href: '#reserve',    label: 'Reservations' },
@@ -35,6 +36,18 @@ export function Navbar({ config }: NavbarProps) {
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
+
+  // Lock body scroll on mobile when menu is open
+  useEffect(() => {
+    if (menuOpen) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = ''
+    }
+    return () => {
+      document.body.style.overflow = ''
+    }
+  }, [menuOpen])
 
   const go = (href: string) => {
     setMenuOpen(false)

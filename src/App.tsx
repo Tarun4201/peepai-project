@@ -4,6 +4,7 @@ import { Hero } from './components/sections/Hero'
 import { Welcome } from './components/sections/Welcome'
 import { Vibe } from './components/sections/Vibe'
 import { CorporateEvents } from './components/sections/CorporateEvents'
+import { FoodShowcase } from './components/sections/FoodShowcase'
 import { Menu } from './components/sections/Menu'
 import { Gallery } from './components/sections/Gallery'
 import { Reserve } from './components/sections/Reserve'
@@ -19,6 +20,7 @@ export default function App() {
         <Welcome config={config} />
         <Vibe />
         <CorporateEvents config={config} />
+        <FoodShowcase />
         <Menu config={config} />
         {config.photos.length > 0 && <Gallery config={config} />}
         <Reserve config={config} />

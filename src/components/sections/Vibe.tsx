@@ -8,28 +8,28 @@ const EXPERIENCES = [
     title: 'Live Acoustic & DJ Evenings',
     desc: 'Curated musical performances and acoustic sessions setting the pulse for Bengaluru nights in our courtyard amphitheatre.',
     highlight: 'Weekly Acts',
-    photo: '/photos/peepai-live-stage-courtyard.jpg',
+    photo: '/photos/ambience4.jpg',
   },
   {
     Icon: Beer,
     title: 'In-House Microbrewery & Decks',
     desc: 'European malts and authentic craft brews on tap across our dual-level open-air brewery deck.',
     highlight: 'Fresh Batches',
-    photo: '/photos/peepai-double-deck-brewery.jpg',
+    photo: '/photos/ambience6.jpg',
   },
   {
     Icon: Trees,
     title: 'Twilight Sky Terrace',
     desc: 'Sprawling al fresco terrace seating with cool Bengaluru breezes, cozy cabanas, and panoramic city views.',
     highlight: 'Panoramic Views',
-    photo: '/photos/peepai-twilight-sky-terrace.jpg',
+    photo: '/photos/ambience2.jpg',
   },
   {
     Icon: Sparkles,
-    title: 'The Golden Elephant Lounge',
-    desc: "Bengaluru's iconic sculptural relief wall art presiding over intimate gatherings and celebrations.",
+    title: 'The Pop-Art VIP Suite',
+    desc: 'Intimate bespoke lounge with floral wingbacks, mirrored ceiling art, and private dining elegance.',
     highlight: 'Signature Decor',
-    photo: '/photos/peepai-elephant-mural.jpg',
+    photo: '/photos/ambience3.jpg',
   },
 ]
 
@@ -246,7 +246,7 @@ export function Vibe() {
             {/* Large Focal Feature: Double Deck Brewery (span 7) */}
             <div className="md:col-span-7 relative h-72 sm:h-96 rounded-[2px] overflow-hidden group border border-[rgba(200,189,170,0.12)] bg-[#1e1c18]">
               <img
-                src="/photos/peepai-double-deck-brewery.jpg"
+                src="/photos/ambience6.jpg"
                 alt="Two-Tier Brewery Deck & Emerald Bar"
                 className="w-full h-full object-cover object-[center_35%] transition-transform duration-700 ease-out group-hover:scale-105"
                 loading="lazy"
@@ -277,8 +277,8 @@ export function Vibe() {
             {/* Top Right: Illuminated Amber Bar Canopy (span 5) */}
             <div className="md:col-span-5 relative h-72 sm:h-96 rounded-[2px] overflow-hidden group border border-[rgba(200,189,170,0.12)] bg-[#1e1c18]">
               <img
-                src="/photos/peepai-cocktail-bar-canopy.jpg"
-                alt="The Illuminated Amber Bar & Wave Mural"
+                src="/photos/ambience1.jpg"
+                alt="The Illuminated Bacardi Amber Bar & Emerald Lounge"
                 className="w-full h-full object-cover object-[center_35%] transition-transform duration-700 ease-out group-hover:scale-105"
                 loading="lazy"
               />
@@ -295,7 +295,7 @@ export function Vibe() {
                     color: '#F4EFE5',
                   }}
                 >
-                  The Illuminated Amber Canopy Bar
+                  The Bacardi Amber Canopy Bar
                 </h4>
               </div>
             </div>
@@ -303,7 +303,7 @@ export function Vibe() {
             {/* Bottom Left: VIP Suite & Pop Art Lounge (span 4) */}
             <div className="md:col-span-4 relative h-64 sm:h-80 rounded-[2px] overflow-hidden group border border-[rgba(200,189,170,0.12)] bg-[#1e1c18]">
               <img
-                src="/photos/peepai-vip-lounge.jpg"
+                src="/photos/ambience3.jpg"
                 alt="The Pop-Art VIP Suite & Mirrored Lounge"
                 className="w-full h-full object-cover object-[center_45%] transition-transform duration-700 ease-out group-hover:scale-105"
                 loading="lazy"
@@ -329,7 +329,7 @@ export function Vibe() {
             {/* Bottom Center: Courtyard Amphitheatre (span 4) */}
             <div className="md:col-span-4 relative h-64 sm:h-80 rounded-[2px] overflow-hidden group border border-[rgba(200,189,170,0.12)] bg-[#1e1c18]">
               <img
-                src="/photos/peepai-live-stage-courtyard.jpg"
+                src="/photos/ambience4.jpg"
                 alt="Courtyard Amphitheatre & Living Wall"
                 className="w-full h-full object-cover object-center transition-transform duration-700 ease-out group-hover:scale-105"
                 loading="lazy"
@@ -355,7 +355,7 @@ export function Vibe() {
             {/* Bottom Right: Twilight Sky Terrace (span 4) */}
             <div className="md:col-span-4 relative h-64 sm:h-80 rounded-[2px] overflow-hidden group border border-[rgba(200,189,170,0.12)] bg-[#1e1c18]">
               <img
-                src="/photos/peepai-twilight-sky-terrace.jpg"
+                src="/photos/ambience2.jpg"
                 alt="Twilight Sky Terrace & Hebbal Skyline"
                 className="w-full h-full object-cover object-[center_40%] transition-transform duration-700 ease-out group-hover:scale-105"
                 loading="lazy"
