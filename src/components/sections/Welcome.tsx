@@ -36,9 +36,9 @@ export function Welcome({ config }: Props) {
               className="relative w-full aspect-[4/5] sm:aspect-[4/5] max-h-[560px] overflow-hidden rounded-[2px] shadow-2xl border border-[rgba(200,189,170,0.12)] bg-[#1e1c18]"
             >
               <img
-                src="/photos/ambience2.jpg"
-                alt="The Open-Air Rooftop Sky Terrace — Peepai Brewery & Kitchen architectural interior"
-                style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center 45%' }}
+                src="/photos/intro%20photo.jpg"
+                alt="Gilded Birdcage Lounges and Vaulted Mirrored Spirit Salon — Peepai Brewery & Kitchen"
+                style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center 30%' }}
                 loading="eager"
                 fetchPriority="high"
                 decoding="async"
@@ -66,7 +66,7 @@ export function Welcome({ config }: Props) {
                     fontWeight: 700,
                   }}
                 >
-                  Rooftop Sky Terrace &amp; Amber Canopy
+                  Gilded Birdcage Lounges &amp; Spirit Salon
                 </span>
               </div>
             </div>
